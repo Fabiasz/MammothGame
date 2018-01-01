@@ -19,7 +19,7 @@ public class EndlessScrollingBackground {
         dShift = 5;//pace of shifting
 
         batch = new SpriteBatch();
-        img = new Texture("background.png");
+        img = new Texture("Background_31.png");
         img.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat); //image wrapping
     }
 
