@@ -13,22 +13,26 @@ public class MammothGame extends ApplicationAdapter {
 
     EndlessScrollingBackground background;
     Mammoth mammoth;
+    Panel panel;
 
     @Override
     public void create() {
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
+        panel=new Panel();
     }
 
     @Override
     public void render() {
         background.render();
         mammoth.render();
+        panel.render();
     }
 
     @Override
     public void dispose() {
         background.dispose();
         mammoth.dispose();
+        panel.dispose();
     }
 }
