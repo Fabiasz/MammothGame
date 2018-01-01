@@ -38,7 +38,7 @@ public class Mammoth {
     void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), 0, 250, 650, 300);
+        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), 50, 250, 650, 300);
         batch.end();
     }
 
