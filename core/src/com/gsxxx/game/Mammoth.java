@@ -12,7 +12,7 @@ public class Mammoth {
     private static boolean instantiated_ = false;
     private SpriteBatch batch;
 
-    private Animation<TextureRegion> duckAnimation;
+    private Animation<TextureRegion> mammothAnimation;
     private TextureAtlas atlas; //todo optimize animation using TexturePacker and TextureAtlas
     private float stateTime;
 
@@ -27,24 +27,18 @@ public class Mammoth {
         //packing animation frames
         TextureRegion[] walkFrames = new TextureRegion[4];
         int index = 0;
-       /* for (int i = 1; i < 13; i++) {
-            if (i > 9){
-                walkFrames[index++] = new TextureRegion(new Texture("walkingDuck/frame_" + i + ".png"));
-            }else {
-                walkFrames[index++] = new TextureRegion(new Texture("walkingDuck/frame_0" + i + ".png"));
-            }
-        }*/
+
         for (int i = 1; i < 5; i++) {
             walkFrames[index++] = new TextureRegion(new Texture("mammoth/m" + i + ".png"));
         }
-        duckAnimation =
+        mammothAnimation =
                 new Animation<TextureRegion>(0.08f, walkFrames);
     }
 
     void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        batch.draw(duckAnimation.getKeyFrame(stateTime, true), -450, -150, 1920, 1080);
+        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), 0, 250, 650, 300);
         batch.end();
     }
 
