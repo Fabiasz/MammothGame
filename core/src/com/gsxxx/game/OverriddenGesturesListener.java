@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class OverriddenGesturesListener implements GestureDetector.GestureListener {
 
-    Ribbon ribbon;
+    private Ribbon ribbon;
 
     OverriddenGesturesListener(Ribbon ribbon) {
         this.ribbon = ribbon;
@@ -39,7 +39,7 @@ public class OverriddenGesturesListener implements GestureDetector.GestureListen
 
     @Override
     public boolean panStop(float x, float y, int pointer, int button) {
-        ribbon.clearCoordinates();
+        ribbon.turnOffDrawing();
         return false;
     }
 

@@ -13,7 +13,7 @@ public class Mammoth {
     private SpriteBatch batch;
 
     private Animation<TextureRegion> mammothAnimation;
-    private TextureAtlas atlas; //todo optimize animation using TexturePacker and TextureAtlas
+    private TextureAtlas atlas;
     private float stateTime;
 
     Mammoth() {
