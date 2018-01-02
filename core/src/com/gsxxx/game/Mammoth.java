@@ -25,10 +25,10 @@ public class Mammoth {
 
 
         //packing animation frames
-        TextureRegion[] walkFrames = new TextureRegion[4];
+        TextureRegion[] walkFrames = new TextureRegion[6];
         int index = 0;
 
-        for (int i = 1; i < 5; i++) {
+        for (int i = 1; i < 7; i++) {
             walkFrames[index++] = new TextureRegion(new Texture("mammoth/m" + i + ".png"));
         }
         mammothAnimation =
@@ -38,7 +38,7 @@ public class Mammoth {
     void render() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), 50, 250, 650, 300);
+        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), 50, 250, 480, 300);
         batch.end();
     }
 
