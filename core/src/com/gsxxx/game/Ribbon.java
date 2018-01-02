@@ -11,10 +11,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-public class Ribbon {
+class Ribbon {
     private static ShapeRenderer shapeRenderer = new ShapeRenderer();
     private static boolean canBeDrawn = true;
     private LinkedList<Point> pointsList;
+
+    //ribbon properties
     private int lineThickness;
     private int maxLengthOfRibbon;
     private int fadeTime; //in milliseconds
@@ -28,7 +30,6 @@ public class Ribbon {
 
     void render() {
         Gdx.gl.glLineWidth(lineThickness);
-//        shapeRenderer.setProjectionMatrix();
 
         if (pointsList.size() > 1) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
@@ -65,7 +66,7 @@ public class Ribbon {
         canBeDrawn = true;
     }
 
-    class Point {
+    private class Point {
         private int x;
         private int y;
 
@@ -96,7 +97,7 @@ public class Ribbon {
         return length;
     }
 
-    void turnOffDrawing(){
+    void turnOffDrawing() {
         canBeDrawn = false;
     }
 }
