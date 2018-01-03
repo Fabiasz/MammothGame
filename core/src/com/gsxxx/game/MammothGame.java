@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.gsxxx.game.projectiles.Spear;
 
 public class MammothGame extends ApplicationAdapter {
     //main objects
@@ -18,10 +19,11 @@ public class MammothGame extends ApplicationAdapter {
     private Ribbon ribbon;
 
     //physics
-    private World world;
+    public static World world;
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
 
+    Spear spear;
 
     @Override
     public void create() {
@@ -32,20 +34,23 @@ public class MammothGame extends ApplicationAdapter {
         Gdx.input.setInputProcessor(new GestureDetector(new OverriddenGesturesListener(ribbon)));
 
         background = new EndlessScrollingBackground();
-        mammoth = new Mammoth(world);
+        mammoth = new Mammoth();
         panel = new Panel();
 
+        spear = new Spear(800, 400);
     }
 
     @Override
     public void render() {
+        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
+
         background.render();
         mammoth.render();
         ribbon.render();
         panel.render();
 
-        debugRenderer.render(world, camera.combined);
-        world.step(1 / 60f, 6, 2);
+        spear.render();
+//        debugRenderer.render(world, camera.combined);
     }
 
     @Override
@@ -53,10 +58,14 @@ public class MammothGame extends ApplicationAdapter {
         background.dispose();
         mammoth.dispose();
         panel.dispose();
+        world.dispose();
+
+        spear.dispose();
     }
 
     private void initializePhysics() {
-        this.world = new World(new Vector2(0, -10), true);
+        Box2D.init();
+        world = new World(new Vector2(0f, -100f), true);
         debugRenderer = new Box2DDebugRenderer();
     }
 }

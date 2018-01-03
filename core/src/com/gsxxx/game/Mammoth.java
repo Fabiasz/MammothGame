@@ -28,7 +28,7 @@ public class Mammoth {
     private int mammothImageHeight;
 
 
-    Mammoth(World world) {
+    Mammoth() {
         assert (!instantiated_);
         instantiated_ = true;
 
@@ -43,12 +43,12 @@ public class Mammoth {
         mammothImageHeight = 300;
         float runningAnimationFrameDuration = 0.1f;
 
-        //setting up mammoth's hit box
+        //setting up mammoth's hitbox
         BodyDef mammothBodyDef = new BodyDef();
         mammothBodyDef.position.set(mammothImagePositionX, mammothImagePositionY);
-        Body mammothBody = world.createBody(mammothBodyDef);
+        Body mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
-        mammothHitBox.setAsBox(mammothImageWidth, mammothImageHeight); //todo make hit box more specific
+        mammothHitBox.setAsBox(mammothImageWidth, mammothImageHeight); //todo make hitbox more precise
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
 
