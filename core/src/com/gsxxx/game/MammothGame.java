@@ -65,7 +65,7 @@ public class MammothGame extends ApplicationAdapter {
 
     private void initializePhysics() {
         Box2D.init();
-        world = new World(new Vector2(0f, -100f), true);
+        world = new World(new Vector2(0f, -10f), false);
         debugRenderer = new Box2DDebugRenderer();
     }
 }

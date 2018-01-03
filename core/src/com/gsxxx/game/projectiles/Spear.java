@@ -3,6 +3,7 @@ package com.gsxxx.game.projectiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -19,7 +20,7 @@ public class Spear extends ProjectilesPrototype{
 
     public Spear(int projectileStartingPositionX, int projectileStartingPositionY){
         //set starting position
-        float projectileImageScale = 0.2f;
+        float projectileImageScale = 0.5f;
 
         //spear look
         batch = new SpriteBatch();
@@ -42,13 +43,14 @@ public class Spear extends ProjectilesPrototype{
         spearBody.createFixture(spearFixtureDef);
 
         //apply force to spear
-//        spearBody.applyForceToCenter(-10000.0f, 0.0f, true);
+//        spearBody.applyForceToCenter(0.0f, -100.0f, true);
 //        spearBody.applyLinearImpulse(100.0f, 1000f, 800, 400, true);
 
         spearHitbox.dispose();
     }
     public void render(){
         batch.begin();
+        projectileSprite.setRotation(MathUtils.radiansToDegrees * spearBody.getAngle());
         projectileSprite.setPosition(spearBody.getPosition().x, spearBody.getPosition().y);
         projectileSprite.draw(batch);
         batch.end();
