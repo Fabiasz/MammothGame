@@ -23,7 +23,7 @@ public class MammothGame extends ApplicationAdapter {
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
 
-    Spear spear;
+    private Spear spear;
 
     @Override
     public void create() {
@@ -37,12 +37,11 @@ public class MammothGame extends ApplicationAdapter {
         mammoth = new Mammoth();
         panel = new Panel();
 
-        spear = new Spear(800, 400);
+        spear = new Spear(0, 1000);
     }
 
     @Override
     public void render() {
-        world.step(Gdx.graphics.getDeltaTime(), 6, 2);
 
         background.render();
         mammoth.render();
@@ -50,6 +49,7 @@ public class MammothGame extends ApplicationAdapter {
         panel.render();
 
         spear.render();
+        world.step(1/45f, 6, 2);
 //        debugRenderer.render(world, camera.combined);
     }
 

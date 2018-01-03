@@ -37,7 +37,7 @@ public class Mammoth {
         stateTime = 0f;
 
         //setting variables
-        mammothImagePositionX = 50;
+        mammothImagePositionX = 150;
         mammothImagePositionY = 250;
         mammothImageWidth = 480;
         mammothImageHeight = 300;
@@ -45,10 +45,11 @@ public class Mammoth {
 
         //setting up mammoth's hitbox
         BodyDef mammothBodyDef = new BodyDef();
+        mammothBodyDef.type = BodyDef.BodyType.StaticBody;
         mammothBodyDef.position.set(mammothImagePositionX, mammothImagePositionY);
         Body mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
-        mammothHitBox.setAsBox(mammothImageWidth, mammothImageHeight); //todo make hitbox more precise
+        mammothHitBox.setAsBox(mammothImageWidth / 2, mammothImageHeight / 2); //todo make hitbox more precise
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
 

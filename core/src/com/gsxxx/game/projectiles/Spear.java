@@ -20,7 +20,7 @@ public class Spear extends ProjectilesPrototype{
 
     public Spear(int projectileStartingPositionX, int projectileStartingPositionY){
         //set starting position
-        float projectileImageScale = 0.5f;
+        float projectileImageScale = 0.3f;
 
         //spear look
         batch = new SpriteBatch();
@@ -33,13 +33,13 @@ public class Spear extends ProjectilesPrototype{
         spearBodyDef.position.set(projectileStartingPositionX, projectileStartingPositionY);
         spearBody = MammothGame.world.createBody(spearBodyDef);
         PolygonShape spearHitbox = new PolygonShape();
-        spearHitbox.setAsBox(projectileSprite.getWidth(), projectileSprite.getHeight());
+        spearHitbox.setAsBox(projectileSprite.getWidth() / 2, projectileSprite.getHeight() / 2);
         // create a fixture definition to apply our shape to
         FixtureDef spearFixtureDef = new FixtureDef();
         spearFixtureDef.shape = spearHitbox;
         spearFixtureDef.density = 500f;
-        spearFixtureDef.friction = 0.4f;
-        spearFixtureDef.restitution = 0.1f; // make it not bounce at all
+        spearFixtureDef.friction = 0f;
+        spearFixtureDef.restitution = 0f; // make it not bounce at all
         spearBody.createFixture(spearFixtureDef);
 
         //apply force to spear
@@ -50,7 +50,7 @@ public class Spear extends ProjectilesPrototype{
     }
     public void render(){
         batch.begin();
-        projectileSprite.setRotation(MathUtils.radiansToDegrees * spearBody.getAngle());
+        projectileSprite.setRotation((float) Math.toDegrees(spearBody.getAngle()));
         projectileSprite.setPosition(spearBody.getPosition().x, spearBody.getPosition().y);
         projectileSprite.draw(batch);
         batch.end();
