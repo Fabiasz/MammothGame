@@ -11,12 +11,13 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class MammothGame extends ApplicationAdapter {
-
+    //main objects
+    private Panel panel;
     private EndlessScrollingBackground background;
     private Mammoth mammoth;
     private Ribbon ribbon;
-    private Panel panel;
 
+    //physics
     private World world;
     private Box2DDebugRenderer debugRenderer;
     private OrthographicCamera camera;
@@ -24,16 +25,16 @@ public class MammothGame extends ApplicationAdapter {
 
     @Override
     public void create() {
+        initializePhysics();
         camera = new OrthographicCamera();
         ribbon = new Ribbon();
         //gestures listener initialization
         Gdx.input.setInputProcessor(new GestureDetector(new OverriddenGesturesListener(ribbon)));
 
         background = new EndlessScrollingBackground();
-        mammoth = new Mammoth();
+        mammoth = new Mammoth(world);
         panel = new Panel();
 
-        initializePhysics();
     }
 
     @Override
@@ -54,7 +55,7 @@ public class MammothGame extends ApplicationAdapter {
         panel.dispose();
     }
 
-    void initializePhysics() {
+    private void initializePhysics() {
         this.world = new World(new Vector2(0, -10), true);
         debugRenderer = new Box2DDebugRenderer();
     }
