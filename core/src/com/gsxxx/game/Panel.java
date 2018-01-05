@@ -18,10 +18,9 @@ public class Panel extends ApplicationAdapter {
     private Texture hpImage;
     private Texture blank;
     private Sprite sprite,sprite2,sprite3,sprite4;
-    private float health = 0.2f;//1 full health, 0 dead
-    private ShapeRenderer shapeRenderer;
+    float hp;
 
-    Panel() {
+    Panel(float health) {
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("font_01.fnt"));
         font.setColor(Color.DARK_GRAY);
@@ -29,49 +28,35 @@ public class Panel extends ApplicationAdapter {
         sprite2 = new Sprite(new Texture("hp2.png"));
         sprite3 = new Sprite(new Texture("hp3.png"));
         sprite4 = new Sprite(new Texture("hp4.png"));
-        blank = new Texture("blank.png");
-        shapeRenderer=new ShapeRenderer();
+        hp=health;
 
     }
 
     public void dispose() {
         batch.dispose();
         font.dispose();
-        //hpImage.dispose();
     }
 
     public void render() {
         batch.begin();
         font.draw(batch, "score", 50, 150);
-        font.draw(batch, "hp", 1580, 150);
+        font.draw(batch, "hp", 1600, 150);
 
-        //healthbar
-        if (health > 0.75f) {
-            sprite.setCenter(1500, 120);
+        //hp heart
+        if (hp > 0.75f) {
+            sprite.setCenter(1780, 120);
             sprite.draw(batch);
-            batch.setColor(Color.valueOf("009999"));
-        } else if (health > 0.5f) {
-            sprite2.setCenter(1500, 120);
+        } else if (hp > 0.5f) {
+            sprite2.setCenter(1780, 120);
             sprite2.draw(batch);
-            batch.setColor(Color.valueOf("00CCCC"));
-        } else if(health > 0.25f){
-            sprite3.setCenter(1500, 120);
+        } else if(hp > 0.25f){
+            sprite3.setCenter(1780, 120);
             sprite3.draw(batch);
-            batch.setColor(Color.valueOf("99FFFF"));
         }else{
-            sprite4.setCenter(1500, 120);
+            sprite4.setCenter(1780, 120);
             sprite4.draw(batch);
-            batch.setColor(Color.valueOf("99FFFF"));
         }
-
-        batch.draw(blank, 1680, 100, 200 * health, 30);
         batch.end();
-
-        shapeRenderer.setColor(Color.valueOf("009999"));
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.rect(1680, 100, 200, 30);
-        shapeRenderer.end();
-
 
     }
 }

@@ -35,8 +35,7 @@ public class MammothGame extends ApplicationAdapter {
 
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
-        panel = new Panel();
-
+        panel = new Panel(mammoth.health);
         spear = new Spear(0, 1000);
     }
 
