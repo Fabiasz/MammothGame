@@ -18,16 +18,17 @@ public class Panel extends ApplicationAdapter {
     private Texture hpImage;
     private Texture blank;
     private Sprite sprite,sprite2,sprite3,sprite4;
+    private ShapeRenderer shapeRenderer;
     float hp;
 
     Panel(float health) {
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("font_01.fnt"));
         font.setColor(Color.DARK_GRAY);
-        sprite = new Sprite(new Texture("hp.png"));
-        sprite2 = new Sprite(new Texture("hp2.png"));
-        sprite3 = new Sprite(new Texture("hp3.png"));
-        sprite4 = new Sprite(new Texture("hp4.png"));
+        hpImage=new Texture("healthbar.png");
+        sprite = new Sprite(hpImage);
+        blank = new Texture("blank.png");
+        shapeRenderer=new ShapeRenderer();
         hp=health;
 
     }
@@ -35,28 +36,29 @@ public class Panel extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        hpImage.dispose();
     }
 
     public void render() {
         batch.begin();
-        font.draw(batch, "score", 50, 150);
-        font.draw(batch, "hp", 1600, 150);
+        font.draw(batch, "score", 1600, 150);
+        font.draw(batch, "hp", 230, 150);
 
-        //hp heart
-        if (hp > 0.75f) {
-            sprite.setCenter(1780, 120);
-            sprite.draw(batch);
-        } else if (hp > 0.5f) {
-            sprite2.setCenter(1780, 120);
-            sprite2.draw(batch);
-        } else if(hp > 0.25f){
-            sprite3.setCenter(1780, 120);
-            sprite3.draw(batch);
-        }else{
-            sprite4.setCenter(1780, 120);
-            sprite4.draw(batch);
+        //healthbar
+        if (hp > 0.70f) {
+            batch.setColor(Color.valueOf("990000"));
+        } else if (hp > 0.4f) {
+            batch.setColor(Color.valueOf("FF0000"));
+        } else {
+            batch.setColor(Color.valueOf("FF6666"));
         }
+
+        batch.draw(blank, 40, 57, 150 , 127*hp);
+        sprite.setCenter(120, 120);
+        sprite.draw(batch);
+
         batch.end();
+
 
     }
 }

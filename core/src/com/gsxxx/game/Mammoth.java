@@ -26,7 +26,7 @@ public class Mammoth {
     private int mammothImagePositionY;
     private int mammothImageWidth;
     private int mammothImageHeight;
-    float health=0.5f;
+    float health=0.2f;
 
     Mammoth() {
         assert (!instantiated_);
