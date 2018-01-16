@@ -10,14 +10,18 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
+import static com.badlogic.gdx.Input.Keys.P;
+import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
+
 public class Mammoth {
     //assurance of single instantiation
     private static boolean instantiated_ = false;
 
     //mammoth look variables
     private SpriteBatch batch;
-    private Animation<TextureRegion> mammothAnimation;
-
+    private Animation<TextureRegion> mammothRunAnimation;
+    //private Animation<TextureRegion> mammothStruckAnimation;  TODO: solve struck mammoth time
+    private Texture mammothStruck;
     //private TextureAtlas atlas; todo
     private float stateTime;
 
@@ -26,9 +30,25 @@ public class Mammoth {
     private float mammothImagePositionY;
     private float mammothImageWidth;
     private float mammothImageHeight;
-    float health = 0.2f;
-
+    float health = 0.8f;
     private Body mammothBody;
+
+    //mammoth states
+    public enum MammothStates {
+        STATE_RUNNING,
+        STATE_STRUCK,
+    }
+
+    private static MammothStates mammothState = MammothStates.STATE_RUNNING;
+
+    public static MammothStates getState() {
+        return mammothState;
+    }
+
+    public static void setState(MammothStates state) {
+        mammothState = state;
+    }
+
 
     Mammoth() {
         assert (!instantiated_);
@@ -45,6 +65,7 @@ public class Mammoth {
         mammothImageHeight = 1.87f;
         float runningAnimationFrameDuration = 0.1f;
 
+
         //setting up mammoth's hitbox
         BodyDef mammothBodyDef = new BodyDef();
         mammothBodyDef.type = BodyDef.BodyType.StaticBody;
@@ -56,17 +77,26 @@ public class Mammoth {
         mammothHitBox.dispose();
 
         //packing running animation frames
-        TextureRegion[] walkFrames = new TextureRegion[6];
+        TextureRegion[] walkFrames = new TextureRegion[4];
         int index = 0;
-        for (int i = 1; i < 7; i++) {
+        for (int i = 1; i < 5; i++) {
             walkFrames[index++] = new TextureRegion(new Texture("mammoth/runningMammoth_" + i + ".png"));
         }
-        mammothAnimation =
+        mammothRunAnimation =
                 new Animation<TextureRegion>(runningAnimationFrameDuration, walkFrames);
+
+        mammothStruck = new Texture("mammoth/struckMammoth_1.png");
     }
 
     void render() {
-        mammothRunningAnimation();
+        if (getState().equals(STATE_STRUCK)) {
+            batch.begin();
+            batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
+                    mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
+            batch.end();
+        } else {
+            mammothRunningAnimation();
+        }
     }
 
     void dispose() {
@@ -78,8 +108,9 @@ public class Mammoth {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
         batch.setProjectionMatrix(MammothGame.camera.combined);
-        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
+        batch.draw(mammothRunAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
                 mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
         batch.end();
     }
+
 }

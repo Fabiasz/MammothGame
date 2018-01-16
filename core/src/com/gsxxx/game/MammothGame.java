@@ -11,6 +11,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.gsxxx.game.projectiles.Spear;
 
+import static com.badlogic.gdx.Input.Keys.P;
+import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
+import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
+import static com.gsxxx.game.Mammoth.setState;
+
 public class MammothGame extends ApplicationAdapter {
     //main objects
     private Panel panel;
@@ -31,7 +36,7 @@ public class MammothGame extends ApplicationAdapter {
     public void create() {
         initializePhysics();
         camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / PPM, (float) Gdx.graphics.getHeight() / PPM);
-        camera.position.set( (float) Gdx.graphics.getWidth() / PPM / 2, (float) Gdx.graphics.getHeight() / PPM / 2, 0);
+        camera.position.set((float) Gdx.graphics.getWidth() / PPM / 2, (float) Gdx.graphics.getHeight() / PPM / 2, 0);
         camera.update();
 
         ribbon = new Ribbon();
@@ -47,14 +52,14 @@ public class MammothGame extends ApplicationAdapter {
 
     @Override
     public void render() {
-
         background.render();
         mammoth.render();
         ribbon.render();
         panel.render();
         spear.render();
-
         debugRenderer.render(world, camera.combined);
+
+        stateUpdate();
 
         world.step(1 / 45f, 6, 2);
     }
@@ -65,8 +70,16 @@ public class MammothGame extends ApplicationAdapter {
         mammoth.dispose();
         panel.dispose();
         world.dispose();
-
         spear.dispose();
+    }
+
+    public void stateUpdate() {
+        //press P demo collision
+        if (Gdx.input.isKeyPressed(P)) {
+            setState(STATE_STRUCK);
+        } else {
+            setState(STATE_RUNNING);
+        }
     }
 
     private void initializePhysics() {
