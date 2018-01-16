@@ -19,13 +19,12 @@ public class Spear extends ProjectilesPrototype{
 
 
     public Spear(int projectileStartingPositionX, int projectileStartingPositionY){
-        //set starting position
-        float projectileImageScale = 0.3f;
 
-        //spear look
+        //spear's look
         batch = new SpriteBatch();
         projectileSprite = new Sprite(new Texture("spear.png"));
-        projectileSprite.setScale(projectileImageScale);
+        // 2 m x 0.3 m
+        projectileSprite.setSize(2f, 0.3f);
 
         //spear's body
         BodyDef spearBodyDef = new BodyDef();
@@ -33,7 +32,7 @@ public class Spear extends ProjectilesPrototype{
         spearBodyDef.position.set(projectileStartingPositionX, projectileStartingPositionY);
         spearBody = MammothGame.world.createBody(spearBodyDef);
         PolygonShape spearHitbox = new PolygonShape();
-        spearHitbox.setAsBox(projectileSprite.getWidth() / 2, projectileSprite.getHeight() / 2);
+        spearHitbox.setAsBox(projectileSprite.getWidth() / 2 , projectileSprite.getHeight() / 2);
         // create a fixture definition to apply our shape to
         FixtureDef spearFixtureDef = new FixtureDef();
         spearFixtureDef.shape = spearHitbox;
@@ -44,14 +43,15 @@ public class Spear extends ProjectilesPrototype{
 
         //apply force to spear
 //        spearBody.applyForceToCenter(0.0f, -100.0f, true);
-//        spearBody.applyLinearImpulse(100.0f, 1000f, 800, 400, true);
+//        spearBody.applyLinearImpulse(30.0f, 10f, 800, 400, true);
 
         spearHitbox.dispose();
     }
     public void render(){
         batch.begin();
+        batch.setProjectionMatrix(MammothGame.camera.combined);
         projectileSprite.setRotation((float) Math.toDegrees(spearBody.getAngle()));
-        projectileSprite.setPosition(spearBody.getPosition().x, spearBody.getPosition().y);
+        projectileSprite.setPosition(spearBody.getPosition().x - projectileSprite.getWidth() / 2, spearBody.getPosition().y - projectileSprite.getHeight() / 2);
         projectileSprite.draw(batch);
         batch.end();
     }

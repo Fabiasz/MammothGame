@@ -17,18 +17,23 @@ public class MammothGame extends ApplicationAdapter {
     private EndlessScrollingBackground background;
     private Mammoth mammoth;
     private Ribbon ribbon;
+    private Ground ground;
 
     //physics
     public static World world;
     private Box2DDebugRenderer debugRenderer;
-    private OrthographicCamera camera;
+    static public OrthographicCamera camera;
 
     private Spear spear;
+    static final int PPM = 200;
 
     @Override
     public void create() {
         initializePhysics();
-        camera = new OrthographicCamera();
+        camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / PPM, (float) Gdx.graphics.getHeight() / PPM);
+        camera.position.set( (float) Gdx.graphics.getWidth() / PPM / 2, (float) Gdx.graphics.getHeight() / PPM / 2, 0);
+        camera.update();
+
         ribbon = new Ribbon();
         //gestures listener initialization
         Gdx.input.setInputProcessor(new GestureDetector(new OverriddenGesturesListener(ribbon)));
@@ -36,7 +41,8 @@ public class MammothGame extends ApplicationAdapter {
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
         panel = new Panel(mammoth.health);
-        spear = new Spear(0, 1000);
+        spear = new Spear(5, 3);
+        ground = new Ground();
     }
 
     @Override
@@ -46,10 +52,11 @@ public class MammothGame extends ApplicationAdapter {
         mammoth.render();
         ribbon.render();
         panel.render();
-
         spear.render();
-        world.step(1/45f, 6, 2);
-//        debugRenderer.render(world, camera.combined);
+
+        debugRenderer.render(world, camera.combined);
+
+        world.step(1 / 45f, 6, 2);
     }
 
     @Override
@@ -64,7 +71,7 @@ public class MammothGame extends ApplicationAdapter {
 
     private void initializePhysics() {
         Box2D.init();
-        world = new World(new Vector2(0f, -10f), false);
+        world = new World(new Vector2(0f, -9.81f), false);
         debugRenderer = new Box2DDebugRenderer();
     }
 }

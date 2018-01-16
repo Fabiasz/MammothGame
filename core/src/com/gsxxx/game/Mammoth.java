@@ -22,11 +22,13 @@ public class Mammoth {
     private float stateTime;
 
     //mammoth image properties variables
-    private int mammothImagePositionX;
-    private int mammothImagePositionY;
-    private int mammothImageWidth;
-    private int mammothImageHeight;
-    float health=0.2f;
+    private float mammothImagePositionX;
+    private float mammothImagePositionY;
+    private float mammothImageWidth;
+    private float mammothImageHeight;
+    float health = 0.2f;
+
+    private Body mammothBody;
 
     Mammoth() {
         assert (!instantiated_);
@@ -37,17 +39,17 @@ public class Mammoth {
         stateTime = 0f;
 
         //setting variables
-        mammothImagePositionX = 150;
-        mammothImagePositionY = 250;
-        mammothImageWidth = 480;
-        mammothImageHeight = 300;
+        mammothImagePositionX = 0.3f;
+        mammothImagePositionY = 1.2f;
+        mammothImageWidth = 3f;
+        mammothImageHeight = 1.87f;
         float runningAnimationFrameDuration = 0.1f;
 
         //setting up mammoth's hitbox
         BodyDef mammothBodyDef = new BodyDef();
         mammothBodyDef.type = BodyDef.BodyType.StaticBody;
-        mammothBodyDef.position.set(mammothImagePositionX, mammothImagePositionY);
-        Body mammothBody = MammothGame.world.createBody(mammothBodyDef);
+        mammothBodyDef.position.set(mammothImagePositionX + mammothImageWidth / 2, mammothImagePositionY + mammothImageHeight / 2);
+        mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
         mammothHitBox.setAsBox(mammothImageWidth / 2, mammothImageHeight / 2); //todo make hitbox more precise
         mammothBody.createFixture(mammothHitBox, 0.0f);
@@ -75,8 +77,9 @@ public class Mammoth {
     private void mammothRunningAnimation() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), mammothImagePositionX,
-                mammothImagePositionY, mammothImageWidth, mammothImageHeight);
+        batch.setProjectionMatrix(MammothGame.camera.combined);
+        batch.draw(mammothAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
+                mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
         batch.end();
     }
 }
