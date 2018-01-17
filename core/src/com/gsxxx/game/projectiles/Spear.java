@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.MammothGame;
 
@@ -83,8 +85,13 @@ public class Spear extends ProjectilesPrototype {
         MammothGame.world.createJoint(weldJointDef);
 
         //set angle and origin point for sprite
-        projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109 , projectileSprite.getHeight() / 2);
-        spearShaft.setTransform(spearShaft.getPosition(), projectileStaringAngle);
+        projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109, projectileSprite.getHeight() / 2);
+
+        float r = (float) Math.sqrt(Math.pow(spearShaft.getPosition().x - spearHead.getPosition().x, 2) + Math.pow(spearShaft.getPosition().y - spearHead.getPosition().y, 2));
+        spearShaft.setTransform(spearShaft.getPosition(), (float) Math.toRadians(projectileStaringAngle));
+        spearHead.setTransform(spearShaft.getPosition().x - (float) Math.cos(Math.toRadians(projectileStaringAngle)) * r,
+                spearShaft.getPosition().y + (float) Math.sin(Math.toRadians(projectileStaringAngle)) * r,
+                (float) Math.toRadians(projectileStaringAngle));
 
         //apply force to spear
 //       spearHead.applyForceToCenter(0.0f, -100.0f, true);
