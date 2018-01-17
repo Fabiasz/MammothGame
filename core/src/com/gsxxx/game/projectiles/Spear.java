@@ -53,7 +53,14 @@ public class Spear extends ProjectilesPrototype {
 
         //head hitbox
         PolygonShape spearHitboxHead = new PolygonShape();
-        spearHitboxHead.setAsBox(projectileSprite.getWidth() / 2 * 250 / 1109, projectileSprite.getHeight() / 2);
+//        spearHitboxHead.setAsBox(projectileSprite.getWidth() / 2 * 250 / 1109, projectileSprite.getHeight() / 2);
+
+        Vector2[] verticesShaft = new Vector2[4];
+        verticesShaft [0] = new Vector2(-projectileSprite.getWidth() / 2 * 250 / 1109,0);
+        verticesShaft [1] = new Vector2(0, projectileSprite.getHeight() / 2);
+        verticesShaft [2] = new Vector2(projectileSprite.getWidth() / 2 * 250 / 1109,0);
+        verticesShaft [3] = new Vector2(0, -projectileSprite.getHeight() / 2);
+        spearHitboxHead.set(verticesShaft);
 
         //head fixture
         FixtureDef fixtureDefHead = new FixtureDef();
@@ -84,9 +91,10 @@ public class Spear extends ProjectilesPrototype {
         weldJointDef.initialize(weldJointDef.bodyB, weldJointDef.bodyA, weldpoint);
         MammothGame.world.createJoint(weldJointDef);
 
-        //set angle and origin point for sprite
+        //set origin point for sprite
         projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109, projectileSprite.getHeight() / 2);
 
+        //r distance between head starting position and shaft starting position needed to set starting angle
         float r = (float) Math.sqrt(Math.pow(spearShaft.getPosition().x - spearHead.getPosition().x, 2) + Math.pow(spearShaft.getPosition().y - spearHead.getPosition().y, 2));
         spearShaft.setTransform(spearShaft.getPosition(), (float) Math.toRadians(projectileStaringAngle));
         spearHead.setTransform(spearShaft.getPosition().x - (float) Math.cos(Math.toRadians(projectileStaringAngle)) * r,
