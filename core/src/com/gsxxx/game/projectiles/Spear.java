@@ -73,6 +73,7 @@ public class Spear extends ProjectilesPrototype {
         //apply fixtures to body
         spearHead.createFixture(fixtureDefHead);
         spearShaft.createFixture(fixtureDefShaft);
+        spearHead.setUserData("spearHead");
 
         //dispose hitbox
         spearHitboxHead.dispose();
@@ -87,8 +88,8 @@ public class Spear extends ProjectilesPrototype {
         weldJointDef.collideConnected = true;
         weldJointDef.frequencyHz = 0;
         weldJointDef.dampingRatio = 0;
-        Vector2 weldpoint = spearHead.getWorldCenter();
-        weldJointDef.initialize(weldJointDef.bodyB, weldJointDef.bodyA, weldpoint);
+        Vector2 weldPoint = spearHead.getWorldCenter();
+        weldJointDef.initialize(weldJointDef.bodyB, weldJointDef.bodyA, weldPoint);
         MammothGame.world.createJoint(weldJointDef);
 
         //set origin point for sprite

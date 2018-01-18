@@ -3,11 +3,11 @@ package com.gsxxx.game;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 
-public class OverriddenGesturesListener implements GestureDetector.GestureListener {
+public class MyGesturesListener implements GestureDetector.GestureListener {
 
     private Ribbon ribbon;
 
-    OverriddenGesturesListener(Ribbon ribbon) {
+    MyGesturesListener(Ribbon ribbon) {
         this.ribbon = ribbon;
     }
 

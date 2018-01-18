@@ -36,18 +36,10 @@ public class Mammoth {
     //mammoth states
     public enum MammothStates {
         STATE_RUNNING,
-        STATE_STRUCK,
+        STATE_STRUCK
     }
 
-    private static MammothStates mammothState = MammothStates.STATE_RUNNING;
-
-    public static MammothStates getState() {
-        return mammothState;
-    }
-
-    public static void setState(MammothStates state) {
-        mammothState = state;
-    }
+    private MammothStates mammothState = MammothStates.STATE_RUNNING;
 
 
     Mammoth() {
@@ -55,6 +47,7 @@ public class Mammoth {
         instantiated_ = true;
 
         batch = new SpriteBatch();
+        batch.setProjectionMatrix(MammothGame.camera.combined);
         //counting animation time
         stateTime = 0f;
 
@@ -76,6 +69,9 @@ public class Mammoth {
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
 
+        //set user data name to recognize collision
+        mammothBody.setUserData("mammoth");
+
         //packing running animation frames
         TextureRegion[] walkFrames = new TextureRegion[4];
         int index = 0;
@@ -85,32 +81,43 @@ public class Mammoth {
         mammothRunAnimation =
                 new Animation<TextureRegion>(runningAnimationFrameDuration, walkFrames);
 
+        //struck mammoth frame
         mammothStruck = new Texture("mammoth/struckMammoth_1.png");
     }
 
     void render() {
-        if (getState().equals(STATE_STRUCK)) {
-            batch.begin();
-            batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
-                    mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
-            batch.end();
-        } else {
-            mammothRunningAnimation();
+        switch (this.getState()){
+            case STATE_STRUCK:
+                batch.begin();
+                batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
+                        mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
+                batch.end();
+                break;
+            case STATE_RUNNING:
+                mammothRunningAnimation();
+                break;
         }
-    }
-
-    void dispose() {
-        instantiated_ = false;
-        batch.dispose();
     }
 
     private void mammothRunningAnimation() {
         stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
-        batch.setProjectionMatrix(MammothGame.camera.combined);
         batch.draw(mammothRunAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
                 mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
         batch.end();
     }
 
+    private MammothStates getState() {
+        return mammothState;
+    }
+
+    public void setState(MammothStates state) {
+        mammothState = state;
+    }
+
+
+    void dispose() {
+        instantiated_ = false;
+        batch.dispose();
+    }
 }

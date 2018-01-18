@@ -3,7 +3,6 @@ package com.gsxxx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -14,7 +13,7 @@ import com.gsxxx.game.projectiles.Spear;
 import static com.badlogic.gdx.Input.Keys.P;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
-import static com.gsxxx.game.Mammoth.setState;
+
 
 public class MammothGame extends ApplicationAdapter {
     //main objects
@@ -30,23 +29,24 @@ public class MammothGame extends ApplicationAdapter {
     static public OrthographicCamera camera;
 
     private Spear spear;
-    static final int PPM = 200;
+    private final int PPM = 200;
 
     @Override
     public void create() {
         initializePhysics();
+
         camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / PPM, (float) Gdx.graphics.getHeight() / PPM);
         camera.position.set((float) Gdx.graphics.getWidth() / PPM / 2, (float) Gdx.graphics.getHeight() / PPM / 2, 0);
         camera.update();
 
         ribbon = new Ribbon();
         //gestures listener initialization
-        Gdx.input.setInputProcessor(new GestureDetector(new OverriddenGesturesListener(ribbon)));
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
 
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
         panel = new Panel(mammoth.health);
-        spear = new Spear(7, 4, 90);
+        spear = new Spear(7, 4, 315);
         ground = new Ground();
     }
 
@@ -73,18 +73,19 @@ public class MammothGame extends ApplicationAdapter {
         spear.dispose();
     }
 
-    public void stateUpdate() {
+    private void stateUpdate() {
         //press P demo collision
         if (Gdx.input.isKeyPressed(P)) {
-            setState(STATE_STRUCK);
+            mammoth.setState(STATE_STRUCK);
         } else {
-            setState(STATE_RUNNING);
+            mammoth.setState(STATE_RUNNING);
         }
     }
 
     private void initializePhysics() {
         Box2D.init();
         world = new World(new Vector2(0f, -9.81f), false);
+        world.setContactListener(new MyContactListener());
         debugRenderer = new Box2DDebugRenderer();
     }
 }
