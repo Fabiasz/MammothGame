@@ -45,8 +45,8 @@ public class MammothGame extends ApplicationAdapter {
 
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
-        panel = new Panel(mammoth.health);
-        spear = new Spear(7, 4, 315);
+        panel = new Panel();
+        spear = new Spear(7, 4, 45);
         ground = new Ground();
     }
 
@@ -55,7 +55,7 @@ public class MammothGame extends ApplicationAdapter {
         background.render();
         mammoth.render();
         ribbon.render();
-        panel.render();
+        panel.render(mammoth.health);
         spear.render();
         debugRenderer.render(world, camera.combined);
 
@@ -77,6 +77,7 @@ public class MammothGame extends ApplicationAdapter {
         //press P demo collision
         if (Gdx.input.isKeyPressed(P)) {
             mammoth.setState(STATE_STRUCK);
+            mammoth.health -= 0.02;
         } else {
             mammoth.setState(STATE_RUNNING);
         }

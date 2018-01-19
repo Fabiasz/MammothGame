@@ -30,7 +30,7 @@ public class Mammoth {
     private float mammothImagePositionY;
     private float mammothImageWidth;
     private float mammothImageHeight;
-    float health = 0.8f;
+    float health = 1f;
     private Body mammothBody;
 
     //mammoth states
@@ -40,7 +40,6 @@ public class Mammoth {
     }
 
     private MammothStates mammothState = MammothStates.STATE_RUNNING;
-
 
     Mammoth() {
         assert (!instantiated_);
@@ -114,7 +113,6 @@ public class Mammoth {
     public void setState(MammothStates state) {
         mammothState = state;
     }
-
 
     void dispose() {
         instantiated_ = false;

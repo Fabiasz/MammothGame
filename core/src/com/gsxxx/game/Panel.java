@@ -17,19 +17,18 @@ public class Panel extends ApplicationAdapter {
     private BitmapFont font;
     private Texture hpImage;
     private Texture blank;
-    private Sprite sprite,sprite2,sprite3,sprite4;
+    private Sprite sprite, sprite2, sprite3, sprite4;
     private ShapeRenderer shapeRenderer;
-    float hp;
 
-    Panel(float health) {
+    Panel() {
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("font_01.fnt"));
         font.setColor(Color.DARK_GRAY);
-        hpImage=new Texture("healthbar.png");
+        hpImage = new Texture("healthbar.png");
         sprite = new Sprite(hpImage);
         blank = new Texture("blank.png");
-        shapeRenderer=new ShapeRenderer();
-        hp=health;
+        shapeRenderer = new ShapeRenderer();
+
 
     }
 
@@ -39,7 +38,7 @@ public class Panel extends ApplicationAdapter {
         hpImage.dispose();
     }
 
-    public void render() {
+    public void render(float hp) {
         batch.begin();
         font.draw(batch, "score", 1600, 150);
         font.draw(batch, "hp", 230, 150);
@@ -53,7 +52,7 @@ public class Panel extends ApplicationAdapter {
             batch.setColor(Color.valueOf("FF6666"));
         }
 
-        batch.draw(blank, 40, 57, 150 , 127*hp);
+        batch.draw(blank, 40, 57, 150, 127 * hp);
         sprite.setCenter(120, 120);
         sprite.draw(batch);
 

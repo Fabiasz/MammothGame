@@ -11,7 +11,7 @@ public class Ground {
         groundDef.position.set(MammothGame.camera.viewportWidth / 2, 1);
 
         Body groundBody = MammothGame.world.createBody(groundDef);
-
+        groundBody.setUserData("ground");
 
         PolygonShape groundBox = new PolygonShape();
 

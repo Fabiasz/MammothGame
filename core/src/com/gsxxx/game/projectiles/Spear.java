@@ -74,6 +74,7 @@ public class Spear extends ProjectilesPrototype {
         spearHead.createFixture(fixtureDefHead);
         spearShaft.createFixture(fixtureDefShaft);
         spearHead.setUserData("spearHead");
+        spearShaft.setUserData("spearShaft");
 
         //dispose hitbox
         spearHitboxHead.dispose();
@@ -104,7 +105,7 @@ public class Spear extends ProjectilesPrototype {
 
         //apply force to spear
 //       spearHead.applyForceToCenter(0.0f, -100.0f, true);
-//       spearHead.applyLinearImpulse(new Vector2(-1500,1500), spearHead.getWorldCenter(), true);
+       spearHead.applyLinearImpulse(new Vector2(-800,-800), spearHead.getWorldCenter(), true);
 
     }
 
