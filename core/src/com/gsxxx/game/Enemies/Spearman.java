@@ -5,7 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.gsxxx.game.MammothGame;
+import com.gsxxx.game.projectiles.Spear;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Spearman extends Enemy {
     //assurance of single instantiation
@@ -26,6 +31,7 @@ public class Spearman extends Enemy {
     private float deadEnemyImageWidth;
     private float enemyImageHeight;
 
+    private Spear spear;
 
     //spearman states
     public enum enemyStates {
@@ -34,7 +40,11 @@ public class Spearman extends Enemy {
         STATE_DEAD,
     }
 
-    private static enemyStates enemyState = enemyStates.STATE_ACTIVE;
+    boolean hasSpear = false;
+    boolean isShoooting = false;
+
+    private enemyStates enemyState = enemyStates.STATE_IDLE;
+    float animationTimeDuration;
 
     public Spearman() {
 
@@ -53,53 +63,104 @@ public class Spearman extends Enemy {
         enemyImageWidth = 1.5f;
         enemyImageHeight = 1.95f;
         deadEnemyImageWidth = 1.8f;
-        float AnimationTimeDuration = 0.1f;
+        animationTimeDuration = 0.4f;
 
         TextureRegion[] throwFrames = new TextureRegion[5];
         int index = 0;
         for (int i = 1; i < 6; i++) {
             throwFrames[index++] = new TextureRegion(new Texture("spearman/spearman" + i + ".png"));
         }
-        ThrowAnimation = new Animation<TextureRegion>(AnimationTimeDuration, throwFrames);
+        ThrowAnimation = new Animation<TextureRegion>(animationTimeDuration, throwFrames);
 
         //idle spearman
         spearmanIdle = new Texture("spearman/spearman3.png");
         spearmanDead = new Texture("spearman/spearmanDead.png");
+
+        createSpear();
+
     }
 
     public void render() {
+        batch.begin();
         switch (this.getEnemyState()) {
             case STATE_ACTIVE:
                 enemyThrowingAnimation();
                 break;
             case STATE_IDLE:
-                batch.begin();
-                batch.draw(spearmanIdle,enemyImagePositionX,enemyImagePositionY,enemyImageWidth, enemyImageHeight);
-                batch.end();
+                batch.draw(spearmanIdle, enemyImagePositionX, enemyImagePositionY, enemyImageWidth, enemyImageHeight);
+                break;
             case STATE_DEAD:
-                batch.begin();
-                batch.draw(spearmanDead,enemyImagePositionX,enemyImagePositionY,deadEnemyImageWidth, enemyImageHeight);
-                batch.end();
+                batch.draw(spearmanDead, enemyImagePositionX, enemyImagePositionY, deadEnemyImageWidth, enemyImageHeight);
+                break;
         }
-
+        batch.end();
     }
 
     public void dispose() {
         instantiated_ = false;
         batch.dispose();
     }
-    public static enemyStates getEnemyState() {
+
+    enemyStates getEnemyState() {
         return enemyState;
     }
 
-    public static void setEnemyState(enemyStates enemyState) {
-        Spearman.enemyState = enemyState;
+    public void setEnemyState(enemyStates enemyState) {
+        this.enemyState = enemyState;
     }
 
     private void enemyThrowingAnimation() {
         stateTime += Gdx.graphics.getDeltaTime();
-        batch.begin();
-        batch.draw(ThrowAnimation.getKeyFrame(stateTime, true), enemyImagePositionX, enemyImagePositionY, enemyImageWidth, enemyImageHeight);
-        batch.end();
+        batch.draw(ThrowAnimation.getKeyFrame(stateTime, true), enemyImagePositionX, enemyImagePositionY,
+                enemyImageWidth, enemyImageHeight);
+    }
+
+    private void createSpear() {
+        if (!hasSpear) {
+            spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
+                    enemyImagePositionY + enemyImageHeight * 55 / 90, 0);
+            MammothGame.projectilesToRender.add(spear);
+            hasSpear = true;
+        }
+    }
+
+    public void shoot() {
+        if (hasSpear && !isShoooting) {
+            isShoooting = true;
+            setEnemyState(enemyStates.STATE_ACTIVE);
+            Timer timer = new Timer();
+            timer.schedule(new Task(spear), 0, (int) (1000 * animationTimeDuration));
+        }
+    }
+
+    class Task extends TimerTask {
+        Spear spear;
+        int i;
+        Vector2[] positionOfSpearOverTime;
+
+        Task(Spear spear) {
+            this.spear = spear;
+            i = 0;
+            positionOfSpearOverTime = new Vector2[]{
+                    new Vector2(enemyImagePositionX + enemyImageWidth * 67 / 80, enemyImagePositionY + enemyImageHeight * 40 / 90),
+                    new Vector2(enemyImagePositionX + enemyImageWidth * 62 / 80, enemyImagePositionY + enemyImageHeight * 48 / 90),
+                    new Vector2(enemyImagePositionX + enemyImageWidth * 55 / 80, enemyImagePositionY + enemyImageHeight * 55 / 90),
+                    new Vector2(enemyImagePositionX + enemyImageWidth * 40 / 80, enemyImagePositionY + enemyImageHeight * 60 / 90),
+                    new Vector2(enemyImagePositionX + enemyImageWidth * 18 / 80, enemyImagePositionY + enemyImageHeight * 62 / 90)};
+        }
+
+        @Override
+        public void run() {
+            if (i == 0) spear.wake();
+            spear.setSpearPosition(positionOfSpearOverTime[i].x, positionOfSpearOverTime[i].y, 0);
+            i++;
+            if (i > 4) {
+                setEnemyState(enemyStates.STATE_IDLE);
+
+                isShoooting = false;
+                hasSpear = false;
+                this.cancel();
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 package com.gsxxx.game.projectiles;
 
-abstract class ProjectilesPrototype {
+public abstract class ProjectilesPrototype {
+    public void render(){}
 }

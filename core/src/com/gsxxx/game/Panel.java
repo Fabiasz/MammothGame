@@ -31,9 +31,9 @@ public class Panel extends ApplicationAdapter {
         sprite = new Sprite(hpImage);
         blank = new Texture("blank.png");
         //setting rgb of the healthbar
-        colorRed= 0.6f;
-        colorGreen=0;
-        colorBlue= 0;
+        colorRed = 0.6f;
+        colorGreen = 0;
+        colorBlue = 0;
     }
 
     public void dispose() {
@@ -47,7 +47,7 @@ public class Panel extends ApplicationAdapter {
         font.draw(batch, "score", 1600, 150);
         font.draw(batch, "hp", 230, 150);
 
-        batch.setColor(colorRed,colorGreen,colorBlue,1);
+        batch.setColor(colorRed, colorGreen, colorBlue, 1);
         batch.draw(blank, 40, 57, 150, 127 * hp);
         sprite.setCenter(120, 120);
         sprite.draw(batch);

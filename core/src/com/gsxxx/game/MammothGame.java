@@ -10,12 +10,12 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.gsxxx.game.Enemies.Spearman;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.gsxxx.game.projectiles.ProjectilesPrototype;
 import com.gsxxx.game.projectiles.Spear;
 
-import static com.badlogic.gdx.Input.Keys.L;
 import java.util.LinkedList;
 
-import static com.badlogic.gdx.Input.Keys.P;
+import static com.badlogic.gdx.Input.Keys.*;
 import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_ACTIVE;
 import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_DEAD;
 import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_IDLE;
@@ -37,8 +37,10 @@ public class MammothGame extends ApplicationAdapter {
     private Box2DDebugRenderer debugRenderer;
     static public OrthographicCamera camera;
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
+    public static LinkedList<ProjectilesPrototype> projectilesToRender;
 
-    private Spear spear;
+    Spear spear;
+
     private final int PPM = 200;
 
     @Override
@@ -57,7 +59,7 @@ public class MammothGame extends ApplicationAdapter {
         mammoth = new Mammoth();
         spearman = new Spearman();
         panel = new Panel();
-        spear = new Spear(7, 4, 45);
+//        spear = new Spear(7, 4, 45);
         ground = new Ground();
     }
 
@@ -67,10 +69,14 @@ public class MammothGame extends ApplicationAdapter {
         mammoth.render();
         spearman.render();
         ribbon.render();
-        panel.render(mammoth.health);
-        spear.render();
 
-//        debugRenderer.render(world, camera.combined);
+//        spear.render();
+        for (ProjectilesPrototype projectile : projectilesToRender) {
+            projectile.render();
+        }
+        panel.render(mammoth.health);
+
+        debugRenderer.render(world, camera.combined);
 
         mammothStateUpdate();
         spearmanStateUpdate();
@@ -86,44 +92,49 @@ public class MammothGame extends ApplicationAdapter {
         spearman.dispose();
         panel.dispose();
         world.dispose();
-        spear.dispose();
     }
 
     private void mammothStateUpdate() {
         //press P demo collision
-        if (Gdx.input.isKeyJustPressed(P) && mammoth.health>0) {
+        if (Gdx.input.isKeyJustPressed(P) && mammoth.health > 0) {
             mammoth.setState(STATE_STRUCK);
             mammoth.health -= 0.1;
-            if(panel.colorRed<1) {
+            if (panel.colorRed < 1) {
                 panel.colorRed += 0.1;
-            }
-            else{
-                panel.colorGreen+=0.2;
-                panel.colorBlue+=0.2;
+            } else {
+                panel.colorGreen += 0.2;
+                panel.colorBlue += 0.2;
             }
         } else {
             mammoth.setState(STATE_RUNNING);
         }
     }
+
     private void spearmanStateUpdate() {
         //press L demo collision
         if (Gdx.input.isKeyPressed(L)) {
             spearman.setEnemyState(STATE_DEAD);
-        } else {
+        } else if (Gdx.input.isKeyPressed(O)) {
             spearman.setEnemyState(STATE_ACTIVE);
+        } else if (Gdx.input.isKeyPressed(U)) {
+            spearman.shoot();
         }
+//        } else {
+//            spearman.setEnemyState(STATE_IDLE);
+//        }
     }
 
     private void initializePhysics() {
         Box2D.init();
         thingsToStick = new LinkedList<MyContactListener.StickInfo>();
+        projectilesToRender = new LinkedList<ProjectilesPrototype>();
         world = new World(new Vector2(0f, -9.81f), false);
         world.setContactListener(new MyContactListener(thingsToStick));
         debugRenderer = new Box2DDebugRenderer();
     }
 
-    private void stickProjectileToMammoth(){
-        while(thingsToStick.size() > 0 ){
+    private void stickProjectileToMammoth() {
+        while (thingsToStick.size() > 0) {
             WeldJointDef weldJointDef = new WeldJointDef();
             weldJointDef.bodyA = thingsToStick.get(0).getMammoth();
             weldJointDef.bodyB = thingsToStick.get(0).getProjectile();

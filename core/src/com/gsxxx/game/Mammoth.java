@@ -85,25 +85,23 @@ public class Mammoth {
     }
 
     void render() {
+        batch.begin();
         switch (this.getState()){
             case STATE_STRUCK:
-                batch.begin();
                 batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
                         mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
-                batch.end();
                 break;
             case STATE_RUNNING:
                 mammothRunningAnimation();
                 break;
         }
+        batch.end();
     }
 
     private void mammothRunningAnimation() {
         stateTime += Gdx.graphics.getDeltaTime();
-        batch.begin();
         batch.draw(mammothRunAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
                 mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
-        batch.end();
     }
 
     private MammothStates getState() {
