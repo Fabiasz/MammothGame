@@ -23,8 +23,10 @@ public class Spearman extends Enemy {
     private float enemyImagePositionX;
     private float enemyImagePositionY;
     private float enemyImageWidth;
-    private float deadEnemyImageWidth;
     private float enemyImageHeight;
+
+    private float deadEnemyImageWidth;
+    private float deadEnemyImagePositionY;
 
 
     //spearman states
@@ -49,10 +51,11 @@ public class Spearman extends Enemy {
 
         //setting variables
         enemyImagePositionX = 6.3f;
-        enemyImagePositionY = 1f;
-        enemyImageWidth = 1.5f;
-        enemyImageHeight = 1.95f;
-        deadEnemyImageWidth = 1.8f;
+        enemyImagePositionY = 1.15f;
+        enemyImageWidth = 1.75f;
+        enemyImageHeight = 1.9f;
+        deadEnemyImageWidth = 1.9f;
+        deadEnemyImagePositionY = 0.9f;
         float AnimationTimeDuration = 0.1f;
 
         TextureRegion[] throwFrames = new TextureRegion[5];
@@ -78,7 +81,7 @@ public class Spearman extends Enemy {
                 batch.end();
             case STATE_DEAD:
                 batch.begin();
-                batch.draw(spearmanDead,enemyImagePositionX,enemyImagePositionY,deadEnemyImageWidth, enemyImageHeight);
+                batch.draw(spearmanDead,enemyImagePositionX,deadEnemyImagePositionY,deadEnemyImageWidth, enemyImageHeight);
                 batch.end();
         }
 
@@ -88,11 +91,11 @@ public class Spearman extends Enemy {
         instantiated_ = false;
         batch.dispose();
     }
-    public static enemyStates getEnemyState() {
+    public enemyStates getEnemyState() {
         return enemyState;
     }
 
-    public static void setEnemyState(enemyStates enemyState) {
+    public void setEnemyState(enemyStates enemyState) {
         Spearman.enemyState = enemyState;
     }
 
