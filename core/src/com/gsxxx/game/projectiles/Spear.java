@@ -5,8 +5,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.MammothGame;
 
@@ -18,17 +16,11 @@ public class Spear extends ProjectilesPrototype {
     private Body spearHead;
     private Body spearShaft;
 
-    boolean isAwake = false;
-    private float wakePositionX;
-    private float wakePositionY;
-    private int wakeAngle;
+    private boolean isAwake = false;
+
 
 
     public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStaringAngle) {
-        wakePositionX = projectileStartingPositionX;
-        wakePositionY = projectileStartingPositionY;
-        wakeAngle = projectileStaringAngle;
-
         //spear look
         batch = new SpriteBatch();
         batch.setProjectionMatrix(MammothGame.camera.combined);
@@ -114,7 +106,8 @@ public class Spear extends ProjectilesPrototype {
 
     public void render() {
         if(!isAwake){
-            setSpearPosition(wakePositionX , wakePositionY, wakeAngle);
+            spearHead.setGravityScale(0);
+            spearShaft.setGravityScale(0);
         }
 
         batch.begin();
@@ -125,6 +118,17 @@ public class Spear extends ProjectilesPrototype {
         batch.end();
     }
 
+    public void wake()
+    {
+        this.isAwake = true;
+        spearHead.setGravityScale(1);
+        spearShaft.setGravityScale(1);
+    }
+
+    public void shoot(){
+        spearHead.applyLinearImpulse(new Vector2(-1000,0), spearHead.getWorldCenter(), true);
+    }
+
     private void setSpearAngle(int projectileStaringAngle) {
         //r distance between head starting position and shaft starting position needed to set starting angle
         float r = (float) Math.sqrt(Math.pow(spearShaft.getPosition().x - spearHead.getPosition().x, 2) + Math.pow(spearShaft.getPosition().y - spearHead.getPosition().y, 2));
@@ -132,11 +136,6 @@ public class Spear extends ProjectilesPrototype {
         spearHead.setTransform(spearShaft.getPosition().x - (float) Math.cos(Math.toRadians(projectileStaringAngle)) * r,
                 spearShaft.getPosition().y + (float) Math.sin(Math.toRadians(projectileStaringAngle)) * r,
                 (float) Math.toRadians(projectileStaringAngle));
-    }
-
-    public void wake()
-    {
-        this.isAwake = true;
     }
 
     public void setSpearPosition(float x, float y, int projectileStartingAngle) {

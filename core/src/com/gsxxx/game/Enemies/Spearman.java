@@ -154,12 +154,12 @@ public class Spearman extends Enemy {
 
         @Override
         public void run() {
-            if (i == 0) spear.wake();
             spear.setSpearPosition(positionOfSpearOverTime[i].x, positionOfSpearOverTime[i].y, 0);
             i++;
             if (i > 4) {
                 setEnemyState(enemyStates.STATE_IDLE);
-
+                spear.wake();
+                spear.shoot();
                 isShoooting = false;
                 hasSpear = false;
                 this.cancel();
