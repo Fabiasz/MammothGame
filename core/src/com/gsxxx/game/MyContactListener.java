@@ -2,9 +2,17 @@ package com.gsxxx.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+
+import java.util.LinkedList;
 
 public class MyContactListener implements ContactListener {
+
+    private LinkedList<StickInfo> thingsToStick;
+
+    MyContactListener(LinkedList<StickInfo> thingsToStick) {
+        this.thingsToStick = thingsToStick;
+    }
+
     @Override
     public void beginContact(Contact contact) {
 
@@ -29,23 +37,35 @@ public class MyContactListener implements ContactListener {
 
 
         if (bodyA.getUserData().equals("mammoth") && bodyB.getUserData().equals("spearHead")) {
-            stickProjectileAndMammoth(bodyA, bodyB, contact.getWorldManifold().getPoints());
+            thingsToStick.add(new StickInfo(bodyA, bodyB, contact.getWorldManifold().getPoints()));
         } else if (bodyA.getUserData().equals("spearHead") && bodyB.getUserData().equals("mammoth")) {
-            stickProjectileAndMammoth(bodyB, bodyA, contact.getWorldManifold().getPoints());
+            thingsToStick.add(new StickInfo(bodyB, bodyA, contact.getWorldManifold().getPoints()));
         }
 
 
     }
 
-    void stickProjectileAndMammoth(Body mammoth, Body projectile, Vector2 contactPoints[]) {
-        WeldJointDef weldJointDef = new WeldJointDef();
-        weldJointDef.bodyA = mammoth;
-        weldJointDef.bodyB = projectile;
-        weldJointDef.collideConnected = true;
-        weldJointDef.frequencyHz = 0;
-        weldJointDef.dampingRatio = 0;
-        weldJointDef.referenceAngle = weldJointDef.bodyB.getAngle() - weldJointDef.bodyA.getAngle();
-//        weldJointDef.initialize(mammoth, projectile, contactPoints[0]);
-//        MammothGame.world.createJoint(weldJointDef);
+    class StickInfo{
+        private Body mammoth;
+        private Body projectile;
+        private Vector2[] contactPoints;
+
+        StickInfo(Body mammoth, Body projectile, Vector2[] contactPoints) {
+            this.mammoth = mammoth;
+            this.projectile = projectile;
+            this.contactPoints = contactPoints;
+        }
+
+        public Body getMammoth() {
+            return mammoth;
+        }
+
+        public Body getProjectile() {
+            return projectile;
+        }
+
+        public Vector2[] getContactPoints() {
+            return contactPoints;
+        }
     }
 }
