@@ -8,9 +8,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.gsxxx.game.Enemies.Spearman;
 import com.gsxxx.game.projectiles.Spear;
 
+import static com.badlogic.gdx.Input.Keys.L;
 import static com.badlogic.gdx.Input.Keys.P;
+import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_ACTIVE;
+import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_DEAD;
+import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_IDLE;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
 
@@ -20,6 +25,7 @@ public class MammothGame extends ApplicationAdapter {
     private Panel panel;
     private EndlessScrollingBackground background;
     private Mammoth mammoth;
+    private Spearman spearman;
     private Ribbon ribbon;
     private Ground ground;
 
@@ -45,6 +51,7 @@ public class MammothGame extends ApplicationAdapter {
 
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
+        spearman = new Spearman();
         panel = new Panel();
         spear = new Spear(7, 4, 45);
         ground = new Ground();
@@ -54,13 +61,14 @@ public class MammothGame extends ApplicationAdapter {
     public void render() {
         background.render();
         mammoth.render();
+        spearman.render();
         ribbon.render();
         panel.render(mammoth.health);
         spear.render();
         debugRenderer.render(world, camera.combined);
 
-        stateUpdate();
-
+        mammothStateUpdate();
+        spearmanStateUpdate();
         world.step(1 / 45f, 6, 2);
     }
 
@@ -68,18 +76,34 @@ public class MammothGame extends ApplicationAdapter {
     public void dispose() {
         background.dispose();
         mammoth.dispose();
+        spearman.dispose();
         panel.dispose();
         world.dispose();
         spear.dispose();
     }
 
-    private void stateUpdate() {
+    private void mammothStateUpdate() {
         //press P demo collision
-        if (Gdx.input.isKeyPressed(P)) {
+        if (Gdx.input.isKeyJustPressed(P) && mammoth.health>0) {
             mammoth.setState(STATE_STRUCK);
-            mammoth.health -= 0.02;
+            mammoth.health -= 0.1;
+            if(panel.colorRed<1) {
+                panel.colorRed += 0.1;
+            }
+            else{
+                panel.colorGreen+=0.2;
+                panel.colorBlue+=0.2;
+            }
         } else {
             mammoth.setState(STATE_RUNNING);
+        }
+    }
+    private void spearmanStateUpdate() {
+        //press L demo collision
+        if (Gdx.input.isKeyPressed(L)) {
+            spearman.setEnemyState(STATE_DEAD);
+        } else {
+            spearman.setEnemyState(STATE_ACTIVE);
         }
     }
 
