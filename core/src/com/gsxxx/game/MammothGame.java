@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.projectiles.ProjectilesPrototype;
 import com.gsxxx.game.projectiles.Spear;
 
+import static com.badlogic.gdx.Input.Keys.L;
+
 import java.util.LinkedList;
 
 import static com.badlogic.gdx.Input.Keys.*;
@@ -42,6 +44,7 @@ public class MammothGame extends ApplicationAdapter {
     Spear spear;
 
     private final int PPM = 200;
+    private float struckStateTimer=0;
 
     @Override
     public void create() {
@@ -57,6 +60,7 @@ public class MammothGame extends ApplicationAdapter {
 
         background = new EndlessScrollingBackground();
         mammoth = new Mammoth();
+        //mammoth = new Mammoth(world);
         spearman = new Spearman();
         panel = new Panel();
 //        spear = new Spear(7, 4, 45);
@@ -96,17 +100,13 @@ public class MammothGame extends ApplicationAdapter {
 
     private void mammothStateUpdate() {
         //press P demo collision
-        if (Gdx.input.isKeyJustPressed(P) && mammoth.health > 0) {
+        if (Gdx.input.isKeyPressed(P) && struckStateTimer < 2) {
             mammoth.setState(STATE_STRUCK);
-            mammoth.health -= 0.1;
-            if (panel.colorRed < 1) {
-                panel.colorRed += 0.1;
-            } else {
-                panel.colorGreen += 0.2;
-                panel.colorBlue += 0.2;
-            }
+            struckStateTimer += Gdx.graphics.getDeltaTime();
+            mammoth.health -= 0.01;
         } else {
             mammoth.setState(STATE_RUNNING);
+            struckStateTimer = 0;
         }
     }
 

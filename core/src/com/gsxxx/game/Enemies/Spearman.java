@@ -31,6 +31,9 @@ public class Spearman extends Enemy {
     private float deadEnemyImageWidth;
     private float enemyImageHeight;
 
+    private float deadEnemyImageWidth;
+    private float deadEnemyImagePositionY;
+
     private Spear spear;
 
     //spearman states
@@ -59,11 +62,12 @@ public class Spearman extends Enemy {
 
         //setting variables
         enemyImagePositionX = 6.3f;
-        enemyImagePositionY = 1f;
-        enemyImageWidth = 1.5f;
-        enemyImageHeight = 1.95f;
-        deadEnemyImageWidth = 1.8f;
-        animationTimeDuration = 0.4f;
+        enemyImagePositionY = 1.15f;
+        enemyImageWidth = 1.75f;
+        enemyImageHeight = 1.9f;
+        deadEnemyImageWidth = 1.9f;
+        deadEnemyImagePositionY = 0.9f;
+        float AnimationTimeDuration = 0.1f;
 
         TextureRegion[] throwFrames = new TextureRegion[5];
         int index = 0;
