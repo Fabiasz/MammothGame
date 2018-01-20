@@ -8,7 +8,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.projectiles.Spear;
+
+import java.util.LinkedList;
 
 import static com.badlogic.gdx.Input.Keys.P;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
@@ -27,6 +30,7 @@ public class MammothGame extends ApplicationAdapter {
     public static World world;
     private Box2DDebugRenderer debugRenderer;
     static public OrthographicCamera camera;
+    private LinkedList<MyContactListener.StickInfo> thingsToStick;
 
     private Spear spear;
     private final int PPM = 200;
@@ -57,11 +61,14 @@ public class MammothGame extends ApplicationAdapter {
         ribbon.render();
         panel.render(mammoth.health);
         spear.render();
-        debugRenderer.render(world, camera.combined);
+
+//        debugRenderer.render(world, camera.combined);
 
         stateUpdate();
 
         world.step(1 / 45f, 6, 2);
+
+        stickProjectileToMammoth();
     }
 
     @Override
@@ -85,8 +92,24 @@ public class MammothGame extends ApplicationAdapter {
 
     private void initializePhysics() {
         Box2D.init();
+        thingsToStick = new LinkedList<MyContactListener.StickInfo>();
         world = new World(new Vector2(0f, -9.81f), false);
-        world.setContactListener(new MyContactListener());
+        world.setContactListener(new MyContactListener(thingsToStick));
         debugRenderer = new Box2DDebugRenderer();
+    }
+
+    private void stickProjectileToMammoth(){
+        while(thingsToStick.size() > 0 ){
+            WeldJointDef weldJointDef = new WeldJointDef();
+            weldJointDef.bodyA = thingsToStick.get(0).getMammoth();
+            weldJointDef.bodyB = thingsToStick.get(0).getProjectile();
+            weldJointDef.collideConnected = true;
+            weldJointDef.frequencyHz = 0;
+            weldJointDef.dampingRatio = 0;
+            weldJointDef.referenceAngle = weldJointDef.bodyB.getAngle() - weldJointDef.bodyA.getAngle();
+            weldJointDef.initialize(thingsToStick.get(0).getMammoth(), thingsToStick.get(0).getProjectile(), thingsToStick.get(0).getContactPoints()[0]);
+            MammothGame.world.createJoint(weldJointDef);
+            thingsToStick.remove(0);
+        }
     }
 }
