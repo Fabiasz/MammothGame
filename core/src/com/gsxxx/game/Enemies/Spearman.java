@@ -39,6 +39,7 @@ public final class Spearman extends Enemy {
 
     private boolean hasSpear = false;
     private boolean isShooting = false;
+    private boolean isSetSpawnNewSpearTimer = false;
 
     private enemyStates enemyState = enemyStates.STATE_IDLE;
     private float animationTimeDuration;
@@ -87,6 +88,17 @@ public final class Spearman extends Enemy {
                 break;
         }
         batch.end();
+
+        if(!hasSpear && !isSetSpawnNewSpearTimer){
+            isSetSpawnNewSpearTimer = true;
+            new Timer().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    createSpear();
+                    isSetSpawnNewSpearTimer = false;
+                }
+            }, 1000);
+        }
     }
 
     enemyStates getEnemyState() {

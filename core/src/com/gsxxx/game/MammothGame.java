@@ -20,12 +20,10 @@ import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_DEAD;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
 
-
 public class MammothGame extends ApplicationAdapter {
     //starting objects
     private Spearman spearman;
     private Ribbon ribbon;
-
 
     public static World world;
     public static LinkedList<ProjectilesPrototype> projectilesToRender;
@@ -58,6 +56,7 @@ public class MammothGame extends ApplicationAdapter {
         Panel.getInstance().render(Mammoth.getInstance().health);
         Mammoth.getInstance().render();
         debugRenderer.render(world, camera.combined);
+
 
         world.step(1 / 45f, 6, 2);
 

@@ -16,8 +16,6 @@ public class Spear extends ProjectilesPrototype {
     private Body spearHead;
     private Body spearShaft;
 
-    private boolean isAwake = false;
-
     public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
         //spear look
         batch = new SpriteBatch();
@@ -42,6 +40,8 @@ public class Spear extends ProjectilesPrototype {
         fixtureDefShaft.density = 500f;
         fixtureDefShaft.friction = 0f;
         fixtureDefShaft.restitution = 0f; // make it not bounce at all
+        fixtureDefShaft.filter.categoryBits = 0x0002;
+        fixtureDefShaft.filter.maskBits = 0x0001;
 
         //spear head body
         BodyDef spearBodyDefHead = new BodyDef();
@@ -51,7 +51,6 @@ public class Spear extends ProjectilesPrototype {
 
         //head hitbox
         PolygonShape spearHitboxHead = new PolygonShape();
-//        spearHitboxHead.setAsBox(projectileSprite.getWidth() / 2 * 250 / 1109, projectileSprite.getHeight() / 2);
 
         Vector2[] verticesShaft = new Vector2[4];
         verticesShaft[0] = new Vector2(-projectileSprite.getWidth() / 2 * 250 / 1109, 0);
@@ -66,6 +65,8 @@ public class Spear extends ProjectilesPrototype {
         fixtureDefHead.density = 7800f;
         fixtureDefHead.friction = 100f;
         fixtureDefHead.restitution = 0f; // make it not bounce at all
+        fixtureDefHead.filter.categoryBits = 0x0002;
+        fixtureDefHead.filter.maskBits = 0x0001;
 
 
         //apply fixtures to body
@@ -113,13 +114,11 @@ public class Spear extends ProjectilesPrototype {
     }
 
     public void wake() {
-        this.isAwake = true;
         spearHead.setGravityScale(1);
         spearShaft.setGravityScale(1);
     }
 
     private void turnOffGravityForThisSpear() {
-        this.isAwake = false;
         spearHead.setGravityScale(0);
         spearShaft.setGravityScale(0);
     }

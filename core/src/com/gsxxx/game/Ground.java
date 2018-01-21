@@ -9,7 +9,7 @@ public final class Ground {
 
     private Ground() {
         BodyDef groundDef = new BodyDef();
-        groundDef.position.set(MammothGame.camera.viewportWidth / 2, 1);
+        groundDef.position.set(MammothGame.camera.viewportWidth / 2, 1.25f);
 
         Body groundBody = MammothGame.world.createBody(groundDef);
         groundBody.setUserData("ground");
