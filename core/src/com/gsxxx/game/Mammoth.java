@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -64,7 +65,18 @@ public class Mammoth {
         mammothBodyDef.position.set(mammothImagePositionX + mammothImageWidth / 2, mammothImagePositionY + mammothImageHeight / 2);
         mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
-        mammothHitBox.setAsBox(mammothImageWidth / 2, mammothImageHeight / 2); //todo make hitbox more precise
+
+        Vector2[] verticesShaft = new Vector2[8];
+        verticesShaft [0] = new Vector2(-0.8f,-0.85f);
+        verticesShaft [1] = new Vector2(-0.7f,-0.2f);
+        verticesShaft [2] = new Vector2(-0.45f,0.18f);
+        verticesShaft [3] = new Vector2(0.25f, 0.68f);
+        verticesShaft [4] = new Vector2(0.65f, 0.68f);
+        verticesShaft [5] = new Vector2(0.9f,-0.3f);
+        verticesShaft [6] = new Vector2(0.75f,-0.5f);
+        verticesShaft [7] = new Vector2(0.55f, -0.85f);
+        mammothHitBox.set(verticesShaft);
+
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
 
