@@ -26,6 +26,7 @@ public class MammothGame extends ApplicationAdapter {
     private Spearman spearman;
     private Ribbon ribbon;
 
+
     public static World world;
     public static LinkedList<ProjectilesPrototype> projectilesToRender;
     private Box2DDebugRenderer debugRenderer;
@@ -39,6 +40,7 @@ public class MammothGame extends ApplicationAdapter {
         initializePhysics();
         initializeCamera();
         Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
+        Ground.getInstance();//??
 
         //initialize objects
         ribbon = new Ribbon();
@@ -47,9 +49,6 @@ public class MammothGame extends ApplicationAdapter {
 
     @Override
     public void render() {
-        mammothStateUpdate();
-        spearmanStateUpdate();
-
         EndlessScrollingBackground.getInstance().render();
         spearman.render();
         ribbon.render();
@@ -62,7 +61,11 @@ public class MammothGame extends ApplicationAdapter {
 
         world.step(1 / 45f, 6, 2);
 
-        stickProjectileToMammoth();
+        if(!world.isLocked()){
+            stickProjectileToMammoth();
+            mammothStateUpdate();
+            spearmanStateUpdate();
+        }
     }
 
     private void mammothStateUpdate() {

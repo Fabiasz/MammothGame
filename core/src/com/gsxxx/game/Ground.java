@@ -14,10 +14,11 @@ public final class Ground {
         Body groundBody = MammothGame.world.createBody(groundDef);
         groundBody.setUserData("ground");
 
-        PolygonShape groundBox = new PolygonShape();
+        PolygonShape groundHitBox = new PolygonShape();
 
-        groundBox.setAsBox(MammothGame.camera.viewportWidth / 2, 0);
-        groundBody.createFixture(groundBox, 0);
+        groundHitBox.setAsBox(MammothGame.camera.viewportWidth / 2, 0);
+        groundBody.createFixture(groundHitBox, 0);
+        groundHitBox.dispose();
     }
 
     public static Ground getInstance() {
