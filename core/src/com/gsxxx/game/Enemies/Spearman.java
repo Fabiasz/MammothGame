@@ -12,10 +12,7 @@ import com.gsxxx.game.projectiles.Spear;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Spearman extends Enemy {
-    //assurance of single instantiation
-    private static boolean instantiated_ = false;
-
+public final class Spearman extends Enemy {
     //spearman look variables
     private SpriteBatch batch;
     private Animation<TextureRegion> ThrowAnimation;
@@ -31,27 +28,22 @@ public class Spearman extends Enemy {
     private float deadEnemyImageWidth;
     private float enemyImageHeight;
 
-    private float deadEnemyImagePositionY;
-
     private Spear spear;
 
     //spearman states
     public enum enemyStates {
         STATE_IDLE,
-        STATE_ACTIVE,
+        STATE_SHOOTING,
         STATE_DEAD,
     }
 
-    boolean hasSpear = false;
-    boolean isShoooting = false;
+    private boolean hasSpear = false;
+    private boolean isShooting = false;
 
     private enemyStates enemyState = enemyStates.STATE_IDLE;
-    float animationTimeDuration;
+    private float animationTimeDuration;
 
     public Spearman() {
-
-        assert (!instantiated_);
-        instantiated_ = true;
 
         batch = new SpriteBatch();
         batch.setProjectionMatrix(MammothGame.camera.combined);
@@ -65,7 +57,6 @@ public class Spearman extends Enemy {
         enemyImageWidth = 1.75f;
         enemyImageHeight = 1.9f;
         deadEnemyImageWidth = 1.9f;
-        deadEnemyImagePositionY = 0.9f;
         animationTimeDuration = 0.1f;
 
         TextureRegion[] throwFrames = new TextureRegion[5];
@@ -80,13 +71,12 @@ public class Spearman extends Enemy {
         spearmanDead = new Texture("spearman/spearmanDead.png");
 
         createSpear();
-
     }
 
     public void render() {
         batch.begin();
         switch (this.getEnemyState()) {
-            case STATE_ACTIVE:
+            case STATE_SHOOTING:
                 enemyThrowingAnimation();
                 break;
             case STATE_IDLE:
@@ -97,11 +87,6 @@ public class Spearman extends Enemy {
                 break;
         }
         batch.end();
-    }
-
-    public void dispose() {
-        instantiated_ = false;
-        batch.dispose();
     }
 
     enemyStates getEnemyState() {
@@ -118,7 +103,7 @@ public class Spearman extends Enemy {
                 enemyImageWidth, enemyImageHeight);
     }
 
-    private void createSpear() {
+    public void createSpear() {
         if (!hasSpear) {
             spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
                     enemyImagePositionY + enemyImageHeight * 55 / 90, 0);
@@ -128,20 +113,21 @@ public class Spearman extends Enemy {
     }
 
     public void shoot() {
-        if (hasSpear && !isShoooting) {
-            isShoooting = true;
-            setEnemyState(enemyStates.STATE_ACTIVE);
+        if (hasSpear && !isShooting) {
+            isShooting = true;
+            setEnemyState(enemyStates.STATE_SHOOTING);
             Timer timer = new Timer();
-            timer.schedule(new Task(spear), 0, (int) (1000 * animationTimeDuration));
+            timer.schedule(new ShootingSpearTask(spear), 0, (int) (1000 * animationTimeDuration));
         }
     }
 
-    class Task extends TimerTask {
+    class ShootingSpearTask extends TimerTask {
+
         Spear spear;
         int i;
         Vector2[] positionOfSpearOverTime;
 
-        Task(Spear spear) {
+        ShootingSpearTask(Spear spear) {
             this.spear = spear;
             i = 0;
             positionOfSpearOverTime = new Vector2[]{
@@ -154,16 +140,21 @@ public class Spearman extends Enemy {
 
         @Override
         public void run() {
-            spear.setSpearPosition(positionOfSpearOverTime[i].x, positionOfSpearOverTime[i].y, 0);
+            spear.setSpearPosition(positionOfSpearOverTime[i].x, positionOfSpearOverTime[i].y);
             i++;
             if (i > 4) {
                 setEnemyState(enemyStates.STATE_IDLE);
                 spear.wake();
                 spear.shoot();
-                isShoooting = false;
+                isShooting = false;
                 hasSpear = false;
                 this.cancel();
             }
         }
+
+    }
+
+    public void dispose() {
+        batch.dispose();
     }
 }

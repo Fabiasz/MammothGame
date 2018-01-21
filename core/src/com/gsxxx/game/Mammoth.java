@@ -9,15 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
 
-import static com.badlogic.gdx.Input.Keys.P;
-import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
-
-public class Mammoth {
-    //assurance of single instantiation
-    private static boolean instantiated_ = false;
-
+public final class Mammoth {
+    //singleton
+    private static final Mammoth INSTANCE = new Mammoth();
     //mammoth look variables
     private SpriteBatch batch;
     private Animation<TextureRegion> mammothRunAnimation;
@@ -42,10 +37,7 @@ public class Mammoth {
 
     private MammothStates mammothState = MammothStates.STATE_RUNNING;
 
-    Mammoth() {
-        assert (!instantiated_);
-        instantiated_ = true;
-
+    private Mammoth() {
         batch = new SpriteBatch();
         batch.setProjectionMatrix(MammothGame.camera.combined);
         //counting animation time
@@ -57,7 +49,6 @@ public class Mammoth {
         mammothImageWidth = 3f;
         mammothImageHeight = 1.87f;
         float runningAnimationFrameDuration = 0.1f;
-
 
         //setting up mammoth's hitbox
         BodyDef mammothBodyDef = new BodyDef();
@@ -80,7 +71,7 @@ public class Mammoth {
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
 
-        //set user data name to recognize collision
+        //set user data name to recognize collisions
         mammothBody.setUserData("mammoth");
 
         //packing running animation frames
@@ -124,8 +115,11 @@ public class Mammoth {
         mammothState = state;
     }
 
+    public static Mammoth getInstance() {
+        return INSTANCE;
+    }
+
     void dispose() {
-        instantiated_ = false;
         batch.dispose();
     }
 }

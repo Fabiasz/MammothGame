@@ -18,9 +18,7 @@ public class Spear extends ProjectilesPrototype {
 
     private boolean isAwake = false;
 
-
-
-    public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStaringAngle) {
+    public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
         //spear look
         batch = new SpriteBatch();
         batch.setProjectionMatrix(MammothGame.camera.combined);
@@ -65,8 +63,8 @@ public class Spear extends ProjectilesPrototype {
         //head fixture
         FixtureDef fixtureDefHead = new FixtureDef();
         fixtureDefHead.shape = spearHitboxHead;
-        fixtureDefHead.density = 500f;
-        fixtureDefHead.friction = 0f;
+        fixtureDefHead.density = 7800f;
+        fixtureDefHead.friction = 100f;
         fixtureDefHead.restitution = 0f; // make it not bounce at all
 
 
@@ -96,7 +94,8 @@ public class Spear extends ProjectilesPrototype {
         //set origin point for sprite
         projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109, projectileSprite.getHeight() / 2);
 
-        setSpearAngle(projectileStaringAngle);
+        setSpearAngle(projectileStartingAngle);
+        turnOffGravityForThisSpear();
 
         //apply force to spear
 //       spearHead.applyForceToCenter(0.0f, -100.0f, true);
@@ -105,11 +104,6 @@ public class Spear extends ProjectilesPrototype {
     }
 
     public void render() {
-        if(!isAwake){
-            spearHead.setGravityScale(0);
-            spearShaft.setGravityScale(0);
-        }
-
         batch.begin();
         projectileSprite.setRotation((float) Math.toDegrees(spearShaft.getAngle()));
         projectileSprite.setPosition(spearShaft.getPosition().x - projectileSprite.getWidth() / 2 - projectileSprite.getWidth() / 2 * 250 / 1109,
@@ -118,15 +112,20 @@ public class Spear extends ProjectilesPrototype {
         batch.end();
     }
 
-    public void wake()
-    {
+    public void wake() {
         this.isAwake = true;
         spearHead.setGravityScale(1);
         spearShaft.setGravityScale(1);
     }
 
-    public void shoot(){
-        spearHead.applyLinearImpulse(new Vector2(-1000,0), spearHead.getWorldCenter(), true);
+    private void turnOffGravityForThisSpear() {
+        this.isAwake = false;
+        spearHead.setGravityScale(0);
+        spearShaft.setGravityScale(0);
+    }
+
+    public void shoot() {
+        spearHead.applyLinearImpulse(new Vector2(-7000, 0), spearHead.getWorldCenter(), true);
     }
 
     private void setSpearAngle(int projectileStaringAngle) {
@@ -138,8 +137,7 @@ public class Spear extends ProjectilesPrototype {
                 (float) Math.toRadians(projectileStaringAngle));
     }
 
-    public void setSpearPosition(float x, float y, int projectileStartingAngle) {
-        setSpearAngle(projectileStartingAngle);
+    public void setSpearPosition(float x, float y) {
         Vector2 oldShaftPosition = spearShaft.getPosition();
         Vector2 oldHeadPosition = spearHead.getPosition();
 

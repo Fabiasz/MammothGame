@@ -13,17 +13,19 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.FloatArray;
 
-public class Panel extends ApplicationAdapter {
+public final class Panel extends ApplicationAdapter {
+    private static Panel INSTANCE = new Panel();
+
     private SpriteBatch batch;
     private BitmapFont font;
     private Texture hpImage;
     private Texture blank;
     private Sprite sprite;
-    float colorRed;
-    float colorGreen;
-    float colorBlue;
+    private float colorRed;
+    private float colorGreen;
+    private float colorBlue;
 
-    Panel() {
+    private Panel() {
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("font_01.fnt"));
         font.setColor(Color.DARK_GRAY);
@@ -46,20 +48,23 @@ public class Panel extends ApplicationAdapter {
         batch.begin();
         font.draw(batch, "score", 1600, 150);
         font.draw(batch, "hp", 230, 150);
-        if(hp>=0) {
+        if (hp >= 0) {
             batch.draw(blank, 40, 58, 150, 125 * hp);
         }
-        if((colorRed/hp)<1.05) {
-            batch.setColor(colorRed/hp, colorGreen, colorBlue, 1);
-        }
-        else{
+        if ((colorRed / hp) < 1.05) {
+            batch.setColor(colorRed / hp, colorGreen, colorBlue, 1);
+        } else {
             colorRed = 1f;
             colorGreen = 0.1f;
             colorBlue = 0.1f;
-            batch.setColor(colorRed, colorGreen/hp, colorBlue/hp, 1);
+            batch.setColor(colorRed, colorGreen / hp, colorBlue / hp, 1);
         }
         sprite.setCenter(120, 120);
         sprite.draw(batch);
         batch.end();
+    }
+
+    public static Panel getInstance(){
+        return INSTANCE;
     }
 }

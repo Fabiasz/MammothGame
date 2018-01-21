@@ -3,17 +3,15 @@ package com.gsxxx.game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class EndlessScrollingBackground {
-    //single instantiation assurance
-    private static boolean instantiated_ = false;
+public final class EndlessScrollingBackground {
+    private static EndlessScrollingBackground INSTANCE = new EndlessScrollingBackground();
     private SpriteBatch batch;
     private Texture img;
     private int xShift;
     private int dShift;
 
-    EndlessScrollingBackground() {
-        assert(!instantiated_);
-        instantiated_ = true;
+    private EndlessScrollingBackground() {
+
 
         xShift = 0;//starting point
         dShift = 5;//pace of shifting
@@ -31,8 +29,11 @@ public class EndlessScrollingBackground {
         batch.end();
     }
 
+    public static EndlessScrollingBackground getInstance(){
+        return INSTANCE;
+    }
+
     void dispose(){
-        instantiated_ = false;
         batch.dispose();
         img.dispose();
     }

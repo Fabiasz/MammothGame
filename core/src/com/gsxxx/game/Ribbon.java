@@ -13,7 +13,7 @@ import java.util.TimerTask;
 
 class Ribbon {
     private static ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private static boolean canBeDrawn = true;
+    private boolean canBeDrawn = true;
     private LinkedList<Point> pointsList;
 
     //ribbon properties
@@ -25,7 +25,7 @@ class Ribbon {
         pointsList = new LinkedList<Point>();
         lineThickness = 10;
         maxLengthOfRibbon = 200;
-        fadeTime = 3000;
+        fadeTime = 1000;
     }
 
     void render() {

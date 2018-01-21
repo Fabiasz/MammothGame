@@ -4,9 +4,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
-public class Ground {
+public final class Ground {
+    private static final Ground INSTANCE = new Ground();
 
-    Ground() {
+    private Ground() {
         BodyDef groundDef = new BodyDef();
         groundDef.position.set(MammothGame.camera.viewportWidth / 2, 1);
 
@@ -17,5 +18,9 @@ public class Ground {
 
         groundBox.setAsBox(MammothGame.camera.viewportWidth / 2, 0);
         groundBody.createFixture(groundBox, 0);
+    }
+
+    public static Ground getInstance() {
+        return INSTANCE;
     }
 }
