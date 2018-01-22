@@ -10,12 +10,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.Enemies.Spearman;
-import com.gsxxx.game.projectiles.ProjectilesPrototype;
+import com.gsxxx.game.projectiles.ProjectilePrototype;
 
 import java.util.LinkedList;
 
-import static com.badlogic.gdx.Input.Keys.P;
-import static com.badlogic.gdx.Input.Keys.U;
+import static com.badlogic.gdx.Input.Keys.*;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
 
@@ -25,7 +24,8 @@ public class MammothGame extends ApplicationAdapter {
     private Ribbon ribbon;
 
     public static World world;
-    public static LinkedList<ProjectilesPrototype> projectilesToRender;
+    public static LinkedList<ProjectilePrototype> projectilesToRender;
+    public static LinkedList<ProjectilePrototype> projectilesToDestroy;
     private Box2DDebugRenderer debugRenderer;
     static public OrthographicCamera camera;
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
@@ -49,13 +49,14 @@ public class MammothGame extends ApplicationAdapter {
         EndlessScrollingBackground.getInstance().render();
         spearman.render();
         ribbon.render();
-        for (ProjectilesPrototype projectile : projectilesToRender) {
+        for (ProjectilePrototype projectile : projectilesToRender) {
             projectile.render();
         }
         Panel.getInstance().render(Mammoth.getInstance().health);
         Mammoth.getInstance().render();
-        debugRenderer.render(world, camera.combined);
+//        debugRenderer.render(world, camera.combined);
 
+        removeUnneededSpears();
         stickProjectileToMammoth();
         mammothStateUpdate();
         spearmanStateUpdate();
@@ -79,13 +80,19 @@ public class MammothGame extends ApplicationAdapter {
         //press L demo collision
         if (Gdx.input.isKeyJustPressed(U)) {
             spearman.shoot();
+        } else if (Gdx.input.isKeyJustPressed(Y)) {
+            while (projectilesToRender.size() > 1) {
+                projectilesToRender.get(0).destroyThisProjectile();
+                projectilesToRender.remove(0);
+            }
         }
     }
 
     private void initializePhysics() {
         Box2D.init();
         thingsToStick = new LinkedList<MyContactListener.StickInfo>();
-        projectilesToRender = new LinkedList<ProjectilesPrototype>();
+        projectilesToRender = new LinkedList<ProjectilePrototype>();
+        projectilesToDestroy = new LinkedList<ProjectilePrototype>();
         world = new World(new Vector2(0f, -9.81f), false);
         world.setContactListener(new MyContactListener(thingsToStick));
         debugRenderer = new Box2DDebugRenderer();
@@ -113,13 +120,20 @@ public class MammothGame extends ApplicationAdapter {
         }
     }
 
+    private void removeUnneededSpears() {
+        while (projectilesToDestroy.size() > 0) {
+            projectilesToDestroy.get(0).dispose();
+            projectilesToDestroy.remove(0);
+        }
+    }
+
     @Override
     public void dispose() {
         EndlessScrollingBackground.getInstance().dispose();
         Mammoth.getInstance().dispose();
         Panel.getInstance().dispose();
         spearman.dispose();
-        for (ProjectilesPrototype projectile : projectilesToRender) {
+        for (ProjectilePrototype projectile : projectilesToRender) {
             projectile.dispose();
         }
         world.dispose();

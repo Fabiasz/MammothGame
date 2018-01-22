@@ -5,16 +5,20 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.MammothGame;
 
-public class Spear extends ProjectilesPrototype {
+import static com.gsxxx.game.MammothGame.projectilesToDestroy;
+
+public class Spear extends ProjectilePrototype {
 
     private SpriteBatch batch;
     private Sprite projectileSprite;
 
     private Body spearHead;
     private Body spearShaft;
+    private WeldJoint weldJoint;
 
     public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
         //spear look
@@ -51,7 +55,6 @@ public class Spear extends ProjectilesPrototype {
 
         //head hitbox
         PolygonShape spearHitboxHead = new PolygonShape();
-
         Vector2[] verticesShaft = new Vector2[4];
         verticesShaft[0] = new Vector2(-projectileSprite.getWidth() / 2 * 250 / 1109, 0);
         verticesShaft[1] = new Vector2(0, projectileSprite.getHeight() / 2);
@@ -68,7 +71,6 @@ public class Spear extends ProjectilesPrototype {
         fixtureDefHead.filter.categoryBits = 0x0002;
         fixtureDefHead.filter.maskBits = 0x0001;
 
-
         //apply fixtures to body
         spearHead.createFixture(fixtureDefHead);
         spearShaft.createFixture(fixtureDefShaft);
@@ -78,7 +80,6 @@ public class Spear extends ProjectilesPrototype {
         //dispose hitbox
         spearHitboxHead.dispose();
         spearHitboxShaft.dispose();
-
 
         //weld the spear head to the shaft
         WeldJointDef weldJointDef = new WeldJointDef();
@@ -90,18 +91,13 @@ public class Spear extends ProjectilesPrototype {
         weldJointDef.dampingRatio = 0;
         Vector2 weldPoint = spearHead.getWorldCenter();
         weldJointDef.initialize(weldJointDef.bodyB, weldJointDef.bodyA, weldPoint);
-        MammothGame.world.createJoint(weldJointDef);
+        weldJoint = (WeldJoint) MammothGame.world.createJoint(weldJointDef);
 
         //set origin point for sprite
         projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109, projectileSprite.getHeight() / 2);
 
         setSpearAngle(projectileStartingAngle);
         turnOffGravityForThisSpear();
-
-        //apply force to spear
-//       spearHead.applyForceToCenter(0.0f, -100.0f, true);
-//       spearHead.applyLinearImpulse(new Vector2(-800,-600), spearHead.getWorldCenter(), true);
-
     }
 
     public void render() {
@@ -148,7 +144,14 @@ public class Spear extends ProjectilesPrototype {
             spearHead.setTransform(oldHeadPosition.x + difference.x, oldHeadPosition.y + difference.y, spearHead.getAngle());
      }
 
+    public void destroyThisProjectile(){
+        projectilesToDestroy.add(this);
+    }
+
     public void dispose() {
+        MammothGame.world.destroyJoint(weldJoint);
+        MammothGame.world.destroyBody(spearHead);
+        MammothGame.world.destroyBody(spearShaft);
         batch.dispose();
     }
 }
