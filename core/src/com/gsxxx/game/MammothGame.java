@@ -14,9 +14,8 @@ import com.gsxxx.game.projectiles.ProjectilesPrototype;
 
 import java.util.LinkedList;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_SHOOTING;
-import static com.gsxxx.game.Enemies.Spearman.enemyStates.STATE_DEAD;
+import static com.badlogic.gdx.Input.Keys.P;
+import static com.badlogic.gdx.Input.Keys.U;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
 
@@ -38,7 +37,7 @@ public class MammothGame extends ApplicationAdapter {
         initializePhysics();
         initializeCamera();
         Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
-        Ground.getInstance();//??
+        Ground ground = Ground.getInstance();//??
 
         //initialize objects
         ribbon = new Ribbon();
@@ -57,14 +56,11 @@ public class MammothGame extends ApplicationAdapter {
         Mammoth.getInstance().render();
         debugRenderer.render(world, camera.combined);
 
+        stickProjectileToMammoth();
+        mammothStateUpdate();
+        spearmanStateUpdate();
 
         world.step(1 / 45f, 6, 2);
-
-        if(!world.isLocked()){
-            stickProjectileToMammoth();
-            mammothStateUpdate();
-            spearmanStateUpdate();
-        }
     }
 
     private void mammothStateUpdate() {
@@ -81,18 +77,9 @@ public class MammothGame extends ApplicationAdapter {
 
     private void spearmanStateUpdate() {
         //press L demo collision
-        if (Gdx.input.isKeyPressed(L)) {
-            spearman.setEnemyState(STATE_DEAD);
-        } else if (Gdx.input.isKeyPressed(O)) {
-            spearman.setEnemyState(STATE_SHOOTING);
-        } else if (Gdx.input.isKeyPressed(U)) {
+        if (Gdx.input.isKeyJustPressed(U)) {
             spearman.shoot();
-        } else if (Gdx.input.isKeyPressed(Y)) {
-            spearman.createSpear();
         }
-//        } else {
-//            spearman.setEnemyState(STATE_IDLE);
-//        }
     }
 
     private void initializePhysics() {

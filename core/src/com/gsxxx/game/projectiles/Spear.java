@@ -136,14 +136,17 @@ public class Spear extends ProjectilesPrototype {
                 (float) Math.toRadians(projectileStaringAngle));
     }
 
+    /*
+    to integrate spear with graphics
+     */
     public void setSpearPosition(float x, float y) {
-        Vector2 oldShaftPosition = spearShaft.getPosition();
-        Vector2 oldHeadPosition = spearHead.getPosition();
+            Vector2 oldShaftPosition = spearShaft.getPosition();
+            Vector2 oldHeadPosition = spearHead.getPosition();
 
-        Vector2 difference = new Vector2(x - oldShaftPosition.x, y - oldShaftPosition.y);
-        spearShaft.setTransform(x, y, spearShaft.getAngle());
-        spearHead.setTransform(oldHeadPosition.x + difference.x, oldHeadPosition.y + difference.y, spearHead.getAngle());
-    }
+            Vector2 difference = new Vector2(x - oldShaftPosition.x, y - oldShaftPosition.y);
+            spearShaft.setTransform(x, y, spearShaft.getAngle());
+            spearHead.setTransform(oldHeadPosition.x + difference.x, oldHeadPosition.y + difference.y, spearHead.getAngle());
+     }
 
     public void dispose() {
         batch.dispose();
