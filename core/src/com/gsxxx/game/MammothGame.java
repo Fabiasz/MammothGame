@@ -36,12 +36,13 @@ public class MammothGame extends ApplicationAdapter {
     public void create() {
         initializePhysics();
         initializeCamera();
-        Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
         Ground ground = Ground.getInstance();//??
 
         //initialize objects
         ribbon = new Ribbon();
         spearman = new Spearman();
+
+        Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
     }
 
     @Override
@@ -54,8 +55,11 @@ public class MammothGame extends ApplicationAdapter {
         }
         Panel.getInstance().render(Mammoth.getInstance().health);
         Mammoth.getInstance().render();
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
+        if(ribbon.checkIfShouldBeDestroyed()){
+            ribbon.dispose();
+        }
         removeUnneededSpears();
         stickProjectileToMammoth();
         mammothStateUpdate();
