@@ -120,6 +120,7 @@ public class MammothGame extends ApplicationAdapter {
             weldJointDef.referenceAngle = weldJointDef.bodyB.getAngle() - weldJointDef.bodyA.getAngle();
             weldJointDef.initialize(thingsToStick.get(0).getMammoth(), thingsToStick.get(0).getProjectile(), thingsToStick.get(0).getContactPoints()[0]);
             MammothGame.world.createJoint(weldJointDef);
+            System.out.println("maiknig joint");
             thingsToStick.remove(0);
         }
     }

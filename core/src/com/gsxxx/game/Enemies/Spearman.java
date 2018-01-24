@@ -113,7 +113,7 @@ public final class Spearman extends Enemy {
         if (throwAnimation.isAnimationFinished(stateTime)) {
             setEnemyState(enemyStates.STATE_IDLE);
             spear.wake();
-            spear.shoot();
+            spear.shoot(8000);
             hasSpear = false;
         }
 

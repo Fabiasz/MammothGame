@@ -119,8 +119,12 @@ public class Spear extends ProjectilePrototype {
         spearShaft.setGravityScale(0);
     }
 
-    public void shoot() {
-        spearHead.applyLinearImpulse(new Vector2(-7000, 0), spearHead.getWorldCenter(), true);
+    public void shoot(int strength) {
+        spearHead.applyLinearImpulse(new Vector2((int)(-Math.cos(spearShaft.getAngle()) * strength),
+                (int) (-Math.sin(spearShaft.getAngle())* strength)), spearHead.getWorldCenter(), true);
+        System.out.println((int) -Math.cos(spearShaft.getAngle()) * strength);
+        System.out.println((int) -Math.sin(spearShaft.getAngle())* strength);
+
     }
 
     private void setSpearAngle(int projectileStaringAngle) {
@@ -128,7 +132,7 @@ public class Spear extends ProjectilePrototype {
         float r = (float) Math.sqrt(Math.pow(spearShaft.getPosition().x - spearHead.getPosition().x, 2) + Math.pow(spearShaft.getPosition().y - spearHead.getPosition().y, 2));
         spearShaft.setTransform(spearShaft.getPosition(), (float) Math.toRadians(projectileStaringAngle));
         spearHead.setTransform(spearShaft.getPosition().x - (float) Math.cos(Math.toRadians(projectileStaringAngle)) * r,
-                spearShaft.getPosition().y + (float) Math.sin(Math.toRadians(projectileStaringAngle)) * r,
+                spearShaft.getPosition().y - (float) Math.sin(Math.toRadians(projectileStaringAngle)) * r,
                 (float) Math.toRadians(projectileStaringAngle));
     }
 
