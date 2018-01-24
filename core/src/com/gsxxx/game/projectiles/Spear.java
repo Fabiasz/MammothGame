@@ -120,10 +120,10 @@ public class Spear extends ProjectilePrototype {
     }
 
     public void shoot(int strength) {
-        spearHead.applyLinearImpulse(new Vector2((int)(-Math.cos(spearShaft.getAngle()) * strength),
-                (int) (-Math.sin(spearShaft.getAngle())* strength)), spearHead.getWorldCenter(), true);
-        System.out.println((int) -Math.cos(spearShaft.getAngle()) * strength);
-        System.out.println((int) -Math.sin(spearShaft.getAngle())* strength);
+        spearShaft.applyLinearImpulse(new Vector2((int)(-Math.cos(spearShaft.getAngle()) * strength),
+                (int) (-Math.sin(spearShaft.getAngle())* strength)), spearShaft.getWorldCenter(), true);
+        spearHead.applyLinearImpulse(new Vector2(0, (int) (Math.sin(spearShaft.getAngle())* strength /2)),
+                spearHead.getWorldCenter(), true);
 
     }
 
