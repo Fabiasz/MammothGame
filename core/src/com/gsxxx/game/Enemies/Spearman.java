@@ -113,7 +113,7 @@ public final class Spearman extends Enemy {
         if (throwAnimation.isAnimationFinished(stateTime)) {
             setEnemyState(enemyStates.STATE_IDLE);
             spear.wake();
-            spear.shoot();
+            spear.shoot(5000);
             hasSpear = false;
         }
 
@@ -126,7 +126,7 @@ public final class Spearman extends Enemy {
     private void createSpear() {
         if (!hasSpear) {
             spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
-                    enemyImagePositionY + enemyImageHeight * 55 / 90, 0);
+                    enemyImagePositionY + enemyImageHeight * 55 / 90, 315);
             MammothGame.projectilesToRender.add(spear);
             hasSpear = true;
         } else {
