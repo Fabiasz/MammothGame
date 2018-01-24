@@ -55,7 +55,7 @@ public class MammothGame extends ApplicationAdapter {
         }
         Panel.getInstance().render(Mammoth.getInstance().health);
         Mammoth.getInstance().render();
-        Mammoth.getInstance().struckStateTimer+=Gdx.graphics.getDeltaTime();
+        //Mammoth.getInstance().struckStateTimer+=Gdx.graphics.getDeltaTime();
 
         debugRenderer.render(world, camera.combined);
 
@@ -64,18 +64,11 @@ public class MammothGame extends ApplicationAdapter {
         }
         removeUnneededSpears();
         stickProjectileToMammoth();
-
-        mammothStateUpdate();
         spearmanStateUpdate();
 
         world.step(1 / 45f, 6, 2);
     }
 
-    private void mammothStateUpdate() {
-        if(Mammoth.getInstance().getState()==STATE_STRUCK && Mammoth.getInstance().struckStateTimer>=2){
-            Mammoth.getInstance().setState(STATE_RUNNING);
-        }
-    }
 
     private void spearmanStateUpdate() {
         //press L demo collision

@@ -92,6 +92,7 @@ public final class Mammoth {
     }
 
     void render() {
+        struckStateTimer += Gdx.graphics.getDeltaTime();
         batch.begin();
         switch (this.getState()) {
             case STATE_STRUCK:
@@ -103,6 +104,13 @@ public final class Mammoth {
                 break;
         }
         batch.end();
+        mammothStateUpdate();
+    }
+
+    private void mammothStateUpdate() {
+        if (getState() == STATE_STRUCK && struckStateTimer >= 2) {
+            setState(STATE_RUNNING);
+        }
     }
 
     private void mammothRunningAnimation() {
@@ -114,7 +122,7 @@ public final class Mammoth {
     public void mammothGotHit() {
         health -= 0.05;
         setState(STATE_STRUCK);
-        struckStateTimer=0;
+        struckStateTimer = 0;
     }
 
     public MammothStates getState() {
