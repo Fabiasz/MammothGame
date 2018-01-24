@@ -25,6 +25,7 @@ public class MyContactListener implements ContactListener {
             Mammoth.getInstance().mammothGotHit();
         } else if (bodyA.getUserData().equals("spearHead") && bodyB.getUserData().equals("mammoth")) {
             thingsToStick.add(new StickInfo(bodyB, bodyA, contact.getWorldManifold().getPoints()));
+            Mammoth.getInstance().mammothGotHit();
         }
     }
 
@@ -40,7 +41,7 @@ public class MyContactListener implements ContactListener {
     public void postSolve(Contact contact, ContactImpulse impulse) {
     }
 
-    class StickInfo{
+    class StickInfo {
         private Body mammoth;
         private Body projectile;
         private Vector2[] contactPoints;

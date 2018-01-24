@@ -39,7 +39,7 @@ public final class Mammoth {
     }
 
     private MammothStates mammothState = STATE_RUNNING;
-    public float struckStateTimer = 0;
+    private float struckStateTimer = 0;
 
     private Mammoth() {
         batch = new SpriteBatch();
@@ -61,16 +61,16 @@ public final class Mammoth {
         mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
 
-        Vector2[] verticesMammoth = new Vector2[8];
-        verticesMammoth[0] = new Vector2(-0.8f, -0.85f);
-        verticesMammoth[1] = new Vector2(-0.7f, -0.2f);
-        verticesMammoth[2] = new Vector2(-0.45f, 0.18f);
-        verticesMammoth[3] = new Vector2(0.25f, 0.68f);
-        verticesMammoth[4] = new Vector2(0.65f, 0.68f);
-        verticesMammoth[5] = new Vector2(0.9f, -0.3f);
-        verticesMammoth[6] = new Vector2(0.75f, -0.5f);
-        verticesMammoth[7] = new Vector2(0.55f, -0.85f);
-        mammothHitBox.set(verticesMammoth);
+        Vector2[] verticesShaft = new Vector2[8];
+        verticesShaft[0] = new Vector2(-0.8f, -0.85f);
+        verticesShaft[1] = new Vector2(-0.7f, -0.2f);
+        verticesShaft[2] = new Vector2(-0.45f, 0.18f);
+        verticesShaft[3] = new Vector2(0.25f, 0.60f);
+        verticesShaft[4] = new Vector2(0.55f, 0.60f);
+        verticesShaft[5] = new Vector2(0.8f, -0.3f);
+        verticesShaft[6] = new Vector2(0.75f, -0.5f);
+        verticesShaft[7] = new Vector2(0.55f, -0.85f);
+        mammothHitBox.set(verticesShaft);
 
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
@@ -92,29 +92,24 @@ public final class Mammoth {
     }
 
     void render() {
-        struckStateTimer += Gdx.graphics.getDeltaTime();
+        stateTime += Gdx.graphics.getDeltaTime();
         batch.begin();
         switch (this.getState()) {
             case STATE_STRUCK:
                 batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
                         mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
+                if (stateTime > 1) {
+                    setState(STATE_RUNNING);
+                }
                 break;
             case STATE_RUNNING:
                 mammothRunningAnimation();
                 break;
         }
         batch.end();
-        mammothStateUpdate();
-    }
-
-    private void mammothStateUpdate() {
-        if (getState() == STATE_STRUCK && struckStateTimer >= 2) {
-            setState(STATE_RUNNING);
-        }
     }
 
     private void mammothRunningAnimation() {
-        stateTime += Gdx.graphics.getDeltaTime();
         batch.draw(mammothRunAnimation.getKeyFrame(stateTime, true), mammothBody.getPosition().x - mammothImageWidth / 2,
                 mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
     }
@@ -122,14 +117,14 @@ public final class Mammoth {
     public void mammothGotHit() {
         health -= 0.05;
         setState(STATE_STRUCK);
-        struckStateTimer = 0;
+        stateTime = 0;
     }
 
-    public MammothStates getState() {
+    private MammothStates getState() {
         return mammothState;
     }
 
-    public void setState(MammothStates state) {
+    private void setState(MammothStates state) {
         mammothState = state;
     }
 

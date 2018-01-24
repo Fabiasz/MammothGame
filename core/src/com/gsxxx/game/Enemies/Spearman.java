@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.gsxxx.game.MammothGame;
 import com.gsxxx.game.projectiles.Spear;
 
+import java.util.Random;
+
+
 public final class Spearman extends Enemy {
     //spearman look variables
     private SpriteBatch batch;
@@ -125,8 +128,10 @@ public final class Spearman extends Enemy {
 
     private void createSpear() {
         if (!hasSpear) {
+            Random rand = new Random();
+            int randomNum = rand.nextInt(45);
             spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
-                    enemyImagePositionY + enemyImageHeight * 55 / 90, 315);
+                    enemyImagePositionY + enemyImageHeight * 55 / 90, 360 - randomNum);
             MammothGame.projectilesToRender.add(spear);
             hasSpear = true;
         } else {

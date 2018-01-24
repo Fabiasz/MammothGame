@@ -3,15 +3,10 @@ package com.gsxxx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Colors;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.FloatArray;
 
 public final class Panel extends ApplicationAdapter {
     private static Panel INSTANCE = new Panel();
@@ -32,7 +27,8 @@ public final class Panel extends ApplicationAdapter {
         hpImage = new Texture("healthbar.png");
         sprite = new Sprite(hpImage);
         blank = new Texture("blank.png");
-        //setting rgb of the healthbar
+
+        //setting rgb of the health bar
         colorRed = 0.6f;
         colorGreen = 0;
         colorBlue = 0;
@@ -44,7 +40,8 @@ public final class Panel extends ApplicationAdapter {
         hpImage.dispose();
     }
 
-    public void render(float hp) {
+    public void render() {
+        float hp = Mammoth.getInstance().health;
         batch.begin();
         font.draw(batch, "score", 1600, 150);
         font.draw(batch, "hp", 230, 150);
@@ -64,7 +61,7 @@ public final class Panel extends ApplicationAdapter {
         batch.end();
     }
 
-    public static Panel getInstance(){
+    public static Panel getInstance() {
         return INSTANCE;
     }
 }

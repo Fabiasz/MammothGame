@@ -16,9 +16,7 @@ public class AndroidLauncher extends AndroidApplication {
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
         initialize(new MammothGame(), config);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            hideVirtualButtons();
-        }
+        hideVirtualButtons();
     }
 
     @TargetApi(19)

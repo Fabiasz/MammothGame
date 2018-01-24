@@ -14,9 +14,8 @@ import com.gsxxx.game.projectiles.ProjectilePrototype;
 
 import java.util.LinkedList;
 
-import static com.badlogic.gdx.Input.Keys.*;
-import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
-import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
+import static com.badlogic.gdx.Input.Keys.U;
+import static com.badlogic.gdx.Input.Keys.Y;
 
 public class MammothGame extends ApplicationAdapter {
     //starting objects
@@ -29,8 +28,6 @@ public class MammothGame extends ApplicationAdapter {
     private Box2DDebugRenderer debugRenderer;
     static public OrthographicCamera camera;
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
-
-    private float struckStateTimer = 0;
 
     @Override
     public void create() {
@@ -53,15 +50,16 @@ public class MammothGame extends ApplicationAdapter {
         for (ProjectilePrototype projectile : projectilesToRender) {
             projectile.render();
         }
-        Panel.getInstance().render(Mammoth.getInstance().health);
+        Panel.getInstance().render();
         Mammoth.getInstance().render();
         //Mammoth.getInstance().struckStateTimer+=Gdx.graphics.getDeltaTime();
 
         debugRenderer.render(world, camera.combined);
 
-        if(ribbon.checkIfShouldBeDestroyed()){
+        if (ribbon.checkIfShouldBeDestroyed()) {
             ribbon.dispose();
         }
+
         removeUnneededSpears();
         stickProjectileToMammoth();
         spearmanStateUpdate();
@@ -110,7 +108,6 @@ public class MammothGame extends ApplicationAdapter {
             weldJointDef.referenceAngle = weldJointDef.bodyB.getAngle() - weldJointDef.bodyA.getAngle();
             weldJointDef.initialize(thingsToStick.get(0).getMammoth(), thingsToStick.get(0).getProjectile(), thingsToStick.get(0).getContactPoints()[0]);
             MammothGame.world.createJoint(weldJointDef);
-            System.out.println("maiknig joint");
             thingsToStick.remove(0);
         }
     }
