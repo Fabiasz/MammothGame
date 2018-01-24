@@ -10,6 +10,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
+import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
+
 public final class Mammoth {
     //singleton
     private static final Mammoth INSTANCE = new Mammoth();
@@ -35,7 +38,8 @@ public final class Mammoth {
         STATE_STRUCK
     }
 
-    private MammothStates mammothState = MammothStates.STATE_RUNNING;
+    private MammothStates mammothState = STATE_RUNNING;
+    public float struckStateTimer = 0;
 
     private Mammoth() {
         batch = new SpriteBatch();
@@ -57,16 +61,16 @@ public final class Mammoth {
         mammothBody = MammothGame.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
 
-        Vector2[] verticesShaft = new Vector2[8];
-        verticesShaft [0] = new Vector2(-0.8f,-0.85f);
-        verticesShaft [1] = new Vector2(-0.7f,-0.2f);
-        verticesShaft [2] = new Vector2(-0.45f,0.18f);
-        verticesShaft [3] = new Vector2(0.25f, 0.68f);
-        verticesShaft [4] = new Vector2(0.65f, 0.68f);
-        verticesShaft [5] = new Vector2(0.9f,-0.3f);
-        verticesShaft [6] = new Vector2(0.75f,-0.5f);
-        verticesShaft [7] = new Vector2(0.55f, -0.85f);
-        mammothHitBox.set(verticesShaft);
+        Vector2[] verticesMammoth = new Vector2[8];
+        verticesMammoth[0] = new Vector2(-0.8f, -0.85f);
+        verticesMammoth[1] = new Vector2(-0.7f, -0.2f);
+        verticesMammoth[2] = new Vector2(-0.45f, 0.18f);
+        verticesMammoth[3] = new Vector2(0.25f, 0.68f);
+        verticesMammoth[4] = new Vector2(0.65f, 0.68f);
+        verticesMammoth[5] = new Vector2(0.9f, -0.3f);
+        verticesMammoth[6] = new Vector2(0.75f, -0.5f);
+        verticesMammoth[7] = new Vector2(0.55f, -0.85f);
+        mammothHitBox.set(verticesMammoth);
 
         mammothBody.createFixture(mammothHitBox, 0.0f);
         mammothHitBox.dispose();
@@ -89,7 +93,7 @@ public final class Mammoth {
 
     void render() {
         batch.begin();
-        switch (this.getState()){
+        switch (this.getState()) {
             case STATE_STRUCK:
                 batch.draw(mammothStruck, mammothBody.getPosition().x - mammothImageWidth / 2,
                         mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
@@ -107,7 +111,13 @@ public final class Mammoth {
                 mammothBody.getPosition().y - mammothImageHeight / 2, mammothImageWidth, mammothImageHeight);
     }
 
-    private MammothStates getState() {
+    public void mammothGotHit() {
+        health -= 0.05;
+        setState(STATE_STRUCK);
+        struckStateTimer=0;
+    }
+
+    public MammothStates getState() {
         return mammothState;
     }
 

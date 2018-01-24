@@ -55,6 +55,8 @@ public class MammothGame extends ApplicationAdapter {
         }
         Panel.getInstance().render(Mammoth.getInstance().health);
         Mammoth.getInstance().render();
+        Mammoth.getInstance().struckStateTimer+=Gdx.graphics.getDeltaTime();
+
         debugRenderer.render(world, camera.combined);
 
         if(ribbon.checkIfShouldBeDestroyed()){
@@ -62,6 +64,7 @@ public class MammothGame extends ApplicationAdapter {
         }
         removeUnneededSpears();
         stickProjectileToMammoth();
+
         mammothStateUpdate();
         spearmanStateUpdate();
 
@@ -69,14 +72,8 @@ public class MammothGame extends ApplicationAdapter {
     }
 
     private void mammothStateUpdate() {
-        //press P demo collision
-        if (Gdx.input.isKeyPressed(P) && struckStateTimer < 2) {
-            Mammoth.getInstance().setState(STATE_STRUCK);
-            struckStateTimer += Gdx.graphics.getDeltaTime();
-            Mammoth.getInstance().health -= 0.01;
-        } else {
+        if(Mammoth.getInstance().getState()==STATE_STRUCK && Mammoth.getInstance().struckStateTimer>=2){
             Mammoth.getInstance().setState(STATE_RUNNING);
-            struckStateTimer = 0;
         }
     }
 

@@ -22,6 +22,7 @@ public class MyContactListener implements ContactListener {
 
         if (bodyA.getUserData().equals("mammoth") && bodyB.getUserData().equals("spearHead")) {
             thingsToStick.add(new StickInfo(bodyA, bodyB, contact.getWorldManifold().getPoints()));
+            Mammoth.getInstance().mammothGotHit();
         } else if (bodyA.getUserData().equals("spearHead") && bodyB.getUserData().equals("mammoth")) {
             thingsToStick.add(new StickInfo(bodyB, bodyA, contact.getWorldManifold().getPoints()));
         }
