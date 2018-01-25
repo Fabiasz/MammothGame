@@ -34,10 +34,10 @@ public class PlayScreen implements Screen {
 
     //collision filter constants
     public static final short GROUND = 0x0002;
-    public static final short MAMMOTH = 0x0003;
-    public static final short SPEAR_HEAD = 0x0004;
-    public static final short SPEAR_SHAFT = 0x0005;
-    public static final short RIBBON = 0x0006;
+    public static final short MAMMOTH = 0x0004;
+    public static final short SPEAR_HEAD = 0x0008;
+    public static final short SPEAR_SHAFT = 0x0010;
+    public static final short RIBBON = 0x0020;
 
     public PlayScreen(MammothGame game) {
         this.game = game;
@@ -64,7 +64,7 @@ public class PlayScreen implements Screen {
         Panel.getInstance().render();
         Mammoth.getInstance().render();
 
-//        debugRenderer.render(world, camera.combined);
+        debugRenderer.render(world, camera.combined);
 
         removeUnneededSpears();
         stickProjectileToMammoth();
