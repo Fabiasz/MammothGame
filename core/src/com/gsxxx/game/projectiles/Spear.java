@@ -24,13 +24,13 @@ public class Spear extends ProjectilePrototype {
     private float lifetime;
     private boolean isWaken;
 
-    public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
+    public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle, Texture texture) {
         lifetime = 0;
         isWaken = false;
         //spear look
         batch = new SpriteBatch();
         batch.setProjectionMatrix(PlayScreen.camera.combined);
-        projectileSprite = new Sprite(new Texture("spear.png"));
+        projectileSprite = new Sprite(texture);
         // 2 m x 0.3 m
         projectileSprite.setSize(2f, 0.3f);
 

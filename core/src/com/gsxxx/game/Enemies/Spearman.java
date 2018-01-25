@@ -41,9 +41,10 @@ public final class Spearman extends Enemy {
 
     private enemyStates enemyState = enemyStates.STATE_IDLE;
     private Vector2[] positionOfSpearOverTime;
+    Texture spearTexture;
 
     public Spearman() {
-
+        spearTexture = new Texture("spear.png");
         batch = new SpriteBatch();
         batch.setProjectionMatrix(PlayScreen.camera.combined);
 
@@ -131,7 +132,7 @@ public final class Spearman extends Enemy {
             Random rand = new Random();
             int randomNum = rand.nextInt(45);
             spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
-                    enemyImagePositionY + enemyImageHeight * 55 / 90, 360 - randomNum);
+                    enemyImagePositionY + enemyImageHeight * 55 / 90, 360 - randomNum, spearTexture);
             PlayScreen.projectilesToRender.add(spear);
             hasSpear = true;
         } else {

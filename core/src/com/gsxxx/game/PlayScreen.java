@@ -65,13 +65,14 @@ public class PlayScreen implements Screen {
         Panel.getInstance().render();
         Mammoth.getInstance().render();
 
-        debugRenderer.render(world, camera.combined);
+//        debugRenderer.render(world, camera.combined);
 
         removeUnneededSpears();
         stickProjectileToMammoth();
         spearmanStateUpdate();
 
         world.step(1 / 45f, 6, 2);
+
         if (Panel.getInstance().countDown < 0) {
             this.dispose();
             game.setScreen(new MenuScreen(game));
@@ -166,6 +167,7 @@ public class PlayScreen implements Screen {
             projectile.dispose();
         }
         removeUnneededSpears();
-//        debugRenderer.dispose();
+        ribbon.dispose();
+        debugRenderer.dispose();
     }
 }

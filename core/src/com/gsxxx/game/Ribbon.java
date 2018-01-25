@@ -32,6 +32,7 @@ class Ribbon {
     private Body ribbonBody;
 
     private boolean shouldBeDestroyed = false;
+    private boolean isInstantiated = false;
 
     Ribbon() {
         pointsList = new LinkedList<Point>();
@@ -93,6 +94,7 @@ class Ribbon {
     void turnOffDrawing() {
         canBeDrawn = false;
         if (!isTimerSet) {
+            isInstantiated = true;
             isTimerSet = true;
             new Timer().schedule(new TimerTask() {
                 @Override
@@ -124,11 +126,14 @@ class Ribbon {
         }
     }
 
-    private void dispose() {
-        PlayScreen.world.destroyBody(ribbonBody);
-        shouldBeDestroyed = false;
-        clearCoordinates();
-        canBeDrawn = true;
+    public void dispose() {
+        if (isInstantiated) {
+            PlayScreen.world.destroyBody(ribbonBody);
+            isInstantiated = false;
+            shouldBeDestroyed = false;
+            clearCoordinates();
+            canBeDrawn = true;
+        }
     }
 
     private boolean checkIfShouldBeDestroyed() {
