@@ -16,8 +16,6 @@ import com.gsxxx.game.projectiles.ProjectilePrototype;
 import java.util.LinkedList;
 import java.util.Random;
 
-import static com.badlogic.gdx.Input.Keys.Y;
-
 public class PlayScreen implements Screen {
     //reference to the game
     MammothGame game;
@@ -33,6 +31,13 @@ public class PlayScreen implements Screen {
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
 
     private boolean isSpearmanTimerSet = false;
+
+    //collision filter constants
+    public static final short GROUND = 0x0002;
+    public static final short MAMMOTH = 0x0003;
+    public static final short SPEAR_HEAD = 0x0004;
+    public static final short SPEAR_SHAFT = 0x0005;
+    public static final short RIBBON = 0x0006;
 
     public PlayScreen(MammothGame game) {
         this.game = game;
@@ -81,11 +86,6 @@ public class PlayScreen implements Screen {
                     isSpearmanTimerSet = false;
                 }
             }, randomNum);
-        }
-        if (Gdx.input.isKeyJustPressed(Y)) {
-            while (projectilesToRender.size() > 1) {
-                projectilesToRender.get(0).destroyThisProjectile();
-            }
         }
     }
 

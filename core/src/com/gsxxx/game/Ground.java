@@ -2,7 +2,10 @@ package com.gsxxx.game;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+
+import static com.gsxxx.game.PlayScreen.*;
 
 public final class Ground {
     private static final Ground INSTANCE = new Ground();
@@ -17,7 +20,13 @@ public final class Ground {
         PolygonShape groundHitBox = new PolygonShape();
 
         groundHitBox.setAsBox(PlayScreen.camera.viewportWidth / 2, 0);
-        groundBody.createFixture(groundHitBox, 0);
+
+        FixtureDef groundFixture = new FixtureDef();
+        groundFixture.shape = groundHitBox;
+        groundFixture.density = 1f;
+        groundFixture.filter.categoryBits = GROUND;
+        groundFixture.filter.maskBits = SPEAR_HEAD | SPEAR_SHAFT;
+        groundBody.createFixture(groundFixture);
         groundHitBox.dispose();
     }
 

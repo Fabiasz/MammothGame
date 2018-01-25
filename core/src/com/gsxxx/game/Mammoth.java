@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_RUNNING;
 import static com.gsxxx.game.Mammoth.MammothStates.STATE_STRUCK;
+import static com.gsxxx.game.PlayScreen.MAMMOTH;
+import static com.gsxxx.game.PlayScreen.SPEAR_HEAD;
 
 public final class Mammoth {
     //singleton
@@ -57,6 +60,7 @@ public final class Mammoth {
         BodyDef mammothBodyDef = new BodyDef();
         mammothBodyDef.type = BodyDef.BodyType.StaticBody;
         mammothBodyDef.position.set(mammothImagePositionX + mammothImageWidth / 2, mammothImagePositionY + mammothImageHeight / 2);
+
         mammothBody = PlayScreen.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
 
@@ -71,7 +75,13 @@ public final class Mammoth {
         verticesShaft[7] = new Vector2(0.55f, -0.85f);
         mammothHitBox.set(verticesShaft);
 
-        mammothBody.createFixture(mammothHitBox, 0.0f);
+        //mammoth fixture definition
+        FixtureDef mammothFixture = new FixtureDef();
+        mammothFixture.shape = mammothHitBox;
+        mammothFixture.density = 1f;
+        mammothFixture.filter.categoryBits = MAMMOTH;
+        mammothFixture.filter.maskBits = SPEAR_HEAD;
+        mammothBody.createFixture(mammothFixture);
         mammothHitBox.dispose();
 
         //set user data name to recognize collisions

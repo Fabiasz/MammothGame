@@ -8,11 +8,15 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import static com.gsxxx.game.PlayScreen.RIBBON;
+import static com.gsxxx.game.PlayScreen.SPEAR_HEAD;
 
 
 class Ribbon {
@@ -106,8 +110,15 @@ class Ribbon {
             EdgeShape ribbonHitbox = new EdgeShape();
             ribbonHitbox.set(ribbonHitboxCoordinates[0], ribbonHitboxCoordinates[1]);
 
+            // ribbon fixture definition
             ribbonBody = PlayScreen.world.createBody(ribbonBodyDef);
-            ribbonBody.createFixture(ribbonHitbox, 0);
+            FixtureDef ribbonFixture = new FixtureDef();
+            ribbonFixture.shape = ribbonHitbox;
+            ribbonFixture.density = 0;
+            ribbonFixture.filter.categoryBits = RIBBON;
+            ribbonFixture.filter.maskBits = SPEAR_HEAD;
+
+            ribbonBody.createFixture(ribbonFixture);
             ribbonHitbox.dispose();
             ribbonBody.setUserData("ribbon");
         }

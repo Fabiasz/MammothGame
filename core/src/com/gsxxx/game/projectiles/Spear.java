@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.PlayScreen;
 
+import static com.gsxxx.game.PlayScreen.*;
+
 public class Spear extends ProjectilePrototype {
 
     private SpriteBatch batch;
@@ -48,8 +50,8 @@ public class Spear extends ProjectilePrototype {
         fixtureDefShaft.density = 500f;
         fixtureDefShaft.friction = 0f;
         fixtureDefShaft.restitution = 0f; // make it not bounce at all
-        fixtureDefShaft.filter.categoryBits = 0x0002;
-        fixtureDefShaft.filter.maskBits = 0x0001;
+        fixtureDefShaft.filter.categoryBits = SPEAR_SHAFT;
+        fixtureDefShaft.filter.maskBits = GROUND;
 
         //spear head body
         BodyDef spearBodyDefHead = new BodyDef();
@@ -72,8 +74,8 @@ public class Spear extends ProjectilePrototype {
         fixtureDefHead.density = 7800f;
         fixtureDefHead.friction = 100f;
         fixtureDefHead.restitution = 0f; // make it not bounce at all
-        fixtureDefHead.filter.categoryBits = 0x0002;
-        fixtureDefHead.filter.maskBits = 0x0001;
+        fixtureDefHead.filter.categoryBits = SPEAR_HEAD;
+        fixtureDefHead.filter.maskBits = MAMMOTH | GROUND | RIBBON;
 
         //apply fixtures to body
         spearHead.createFixture(fixtureDefHead);
