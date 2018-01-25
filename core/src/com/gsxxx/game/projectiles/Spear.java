@@ -8,8 +8,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.gsxxx.game.MammothGame;
-
-import static com.gsxxx.game.MammothGame.projectilesToDestroy;
+import com.gsxxx.game.PlayScreen;
+import static com.gsxxx.game.PlayScreen.projectilesToDestroy;
 
 public class Spear extends ProjectilePrototype {
 
@@ -23,7 +23,7 @@ public class Spear extends ProjectilePrototype {
     public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
         //spear look
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(MammothGame.camera.combined);
+        batch.setProjectionMatrix(PlayScreen.camera.combined);
         projectileSprite = new Sprite(new Texture("spear.png"));
         // 2 m x 0.3 m
         projectileSprite.setSize(2f, 0.3f);
@@ -32,7 +32,7 @@ public class Spear extends ProjectilePrototype {
         BodyDef spearBodyDefShaft = new BodyDef();
         spearBodyDefShaft.type = BodyDef.BodyType.DynamicBody;
         spearBodyDefShaft.position.set(projectileStartingPositionX, projectileStartingPositionY);
-        spearShaft = MammothGame.world.createBody(spearBodyDefShaft);
+        spearShaft = PlayScreen.world.createBody(spearBodyDefShaft);
 
         //shaft hitbox
         PolygonShape spearHitboxShaft = new PolygonShape();
@@ -51,16 +51,16 @@ public class Spear extends ProjectilePrototype {
         BodyDef spearBodyDefHead = new BodyDef();
         spearBodyDefHead.type = BodyDef.BodyType.DynamicBody;
         spearBodyDefHead.position.set(projectileStartingPositionX - projectileSprite.getWidth() / 2, projectileStartingPositionY);
-        spearHead = MammothGame.world.createBody(spearBodyDefHead);
+        spearHead = PlayScreen.world.createBody(spearBodyDefHead);
 
         //head hitbox
         PolygonShape spearHitboxHead = new PolygonShape();
-        Vector2[] verticesShaft = new Vector2[4];
-        verticesShaft[0] = new Vector2(-projectileSprite.getWidth() / 2 * 250 / 1109, 0);
-        verticesShaft[1] = new Vector2(0, projectileSprite.getHeight() / 2);
-        verticesShaft[2] = new Vector2(projectileSprite.getWidth() / 2 * 250 / 1109, 0);
-        verticesShaft[3] = new Vector2(0, -projectileSprite.getHeight() / 2);
-        spearHitboxHead.set(verticesShaft);
+        Vector2[] verticesHead = new Vector2[4];
+        verticesHead[0] = new Vector2(-projectileSprite.getWidth() / 2 * 250 / 1109, 0);
+        verticesHead[1] = new Vector2(0, projectileSprite.getHeight() / 2);
+        verticesHead[2] = new Vector2(projectileSprite.getWidth() / 2 * 250 / 1109, 0);
+        verticesHead[3] = new Vector2(0, -projectileSprite.getHeight() / 2);
+        spearHitboxHead.set(verticesHead);
 
         //head fixture
         FixtureDef fixtureDefHead = new FixtureDef();
@@ -91,7 +91,7 @@ public class Spear extends ProjectilePrototype {
         weldJointDef.dampingRatio = 0;
         Vector2 weldPoint = spearHead.getWorldCenter();
         weldJointDef.initialize(weldJointDef.bodyB, weldJointDef.bodyA, weldPoint);
-        weldJoint = (WeldJoint) MammothGame.world.createJoint(weldJointDef);
+        weldJoint = (WeldJoint) PlayScreen.world.createJoint(weldJointDef);
 
         //set origin point for sprite
         projectileSprite.setOrigin(projectileSprite.getWidth() * 680 / 1109, projectileSprite.getHeight() / 2);
@@ -149,13 +149,13 @@ public class Spear extends ProjectilePrototype {
      }
 
     public void destroyThisProjectile(){
-        projectilesToDestroy.add(this);
+        PlayScreen.projectilesToDestroy.add(this);
     }
 
     public void dispose() {
-        MammothGame.world.destroyJoint(weldJoint);
-        MammothGame.world.destroyBody(spearHead);
-        MammothGame.world.destroyBody(spearShaft);
+        PlayScreen.world.destroyJoint(weldJoint);
+        PlayScreen.world.destroyBody(spearHead);
+        PlayScreen.world.destroyBody(spearShaft);
         batch.dispose();
     }
 }

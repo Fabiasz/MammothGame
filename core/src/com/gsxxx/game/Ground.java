@@ -9,14 +9,14 @@ public final class Ground {
 
     private Ground() {
         BodyDef groundDef = new BodyDef();
-        groundDef.position.set(MammothGame.camera.viewportWidth / 2, 1.25f);
+        groundDef.position.set(PlayScreen.camera.viewportWidth / 2, 1.25f);
 
-        Body groundBody = MammothGame.world.createBody(groundDef);
+        Body groundBody = PlayScreen.world.createBody(groundDef);
         groundBody.setUserData("ground");
 
         PolygonShape groundHitBox = new PolygonShape();
 
-        groundHitBox.setAsBox(MammothGame.camera.viewportWidth / 2, 0);
+        groundHitBox.setAsBox(PlayScreen.camera.viewportWidth / 2, 0);
         groundBody.createFixture(groundHitBox, 0);
         groundHitBox.dispose();
     }

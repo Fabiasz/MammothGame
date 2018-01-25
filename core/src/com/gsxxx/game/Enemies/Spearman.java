@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.gsxxx.game.MammothGame;
+import com.gsxxx.game.PlayScreen;
 import com.gsxxx.game.projectiles.Spear;
 
 import java.util.Random;
@@ -45,7 +46,7 @@ public final class Spearman extends Enemy {
     public Spearman() {
 
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(MammothGame.camera.combined);
+        batch.setProjectionMatrix(PlayScreen.camera.combined);
 
         //counting animation time
         stateTime = 0f;
@@ -132,7 +133,7 @@ public final class Spearman extends Enemy {
             int randomNum = rand.nextInt(45);
             spear = new Spear(enemyImagePositionX + enemyImageWidth * 55 / 80,
                     enemyImagePositionY + enemyImageHeight * 55 / 90, 360 - randomNum);
-            MammothGame.projectilesToRender.add(spear);
+            PlayScreen.projectilesToRender.add(spear);
             hasSpear = true;
         } else {
             System.out.println("Wrong spear creating");

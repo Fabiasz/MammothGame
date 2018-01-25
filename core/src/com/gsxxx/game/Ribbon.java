@@ -109,7 +109,7 @@ class Ribbon {
             ChainShape ribbonHitbox = new ChainShape();
             ribbonHitbox.createChain(ribbonHitboxCoordinates);
 
-            ribbonBody = MammothGame.world.createBody(ribbonBodyDef);
+            ribbonBody = PlayScreen.world.createBody(ribbonBodyDef);
             ribbonBody.createFixture(ribbonHitbox, 0);
             ribbonHitbox.dispose();
             ribbonBody.setUserData("ribbon");
@@ -118,7 +118,7 @@ class Ribbon {
     }
 
     void dispose() {
-        MammothGame.world.destroyBody(ribbonBody);
+        PlayScreen.world.destroyBody(ribbonBody);
         shouldBeDestroyed = false;
         canBeDrawn = true;
     }

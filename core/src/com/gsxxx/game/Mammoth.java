@@ -43,7 +43,7 @@ public final class Mammoth {
 
     private Mammoth() {
         batch = new SpriteBatch();
-        batch.setProjectionMatrix(MammothGame.camera.combined);
+        batch.setProjectionMatrix(PlayScreen.camera.combined);
         //counting animation time
         stateTime = 0f;
 
@@ -58,7 +58,7 @@ public final class Mammoth {
         BodyDef mammothBodyDef = new BodyDef();
         mammothBodyDef.type = BodyDef.BodyType.StaticBody;
         mammothBodyDef.position.set(mammothImagePositionX + mammothImageWidth / 2, mammothImagePositionY + mammothImageHeight / 2);
-        mammothBody = MammothGame.world.createBody(mammothBodyDef);
+        mammothBody = PlayScreen.world.createBody(mammothBodyDef);
         PolygonShape mammothHitBox = new PolygonShape();
 
         Vector2[] verticesShaft = new Vector2[8];
