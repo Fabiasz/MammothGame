@@ -142,6 +142,6 @@ public final class Mammoth {
     }
 
     void dispose() {
-        batch.dispose();
+        this.health = 1;
     }
 }

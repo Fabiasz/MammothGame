@@ -23,11 +23,11 @@ public class PlayScreen implements Screen {
     private Spearman spearman;
     private Ribbon ribbon;
 
-    public static World world;
+    public static World world = new World(new Vector2(0f, -9.81f), false);
     public static LinkedList<ProjectilePrototype> projectilesToRender;
     public static LinkedList<ProjectilePrototype> projectilesToDestroy;
     private Box2DDebugRenderer debugRenderer;
-    static public OrthographicCamera camera;
+    static public OrthographicCamera camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / 200, (float) Gdx.graphics.getHeight() / 200);
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
 
     private boolean isSpearmanTimerSet = false;
@@ -51,6 +51,7 @@ public class PlayScreen implements Screen {
         spearman = new Spearman();
 
         Gdx.input.setInputProcessor(new GestureDetector(new MyGesturesListener(ribbon)));
+
     }
 
     @Override
@@ -72,8 +73,8 @@ public class PlayScreen implements Screen {
 
         world.step(1 / 45f, 6, 2);
         if (Panel.getInstance().countDown < 0) {
-            game.setScreen(new MenuScreen(game));
             this.dispose();
+            game.setScreen(new MenuScreen(game));
         }
     }
 
@@ -98,14 +99,13 @@ public class PlayScreen implements Screen {
         thingsToStick = new LinkedList<MyContactListener.StickInfo>();
         projectilesToRender = new LinkedList<ProjectilePrototype>();
         projectilesToDestroy = new LinkedList<ProjectilePrototype>();
-        world = new World(new Vector2(0f, -9.81f), false);
         world.setContactListener(new MyContactListener(thingsToStick));
         debugRenderer = new Box2DDebugRenderer();
     }
 
     private void initializeCamera() {
         final int PPM = 200; // physic world scale variable
-        camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / PPM, (float) Gdx.graphics.getHeight() / PPM);
+//        camera = new OrthographicCamera((float) Gdx.graphics.getWidth() / PPM, (float) Gdx.graphics.getHeight() / PPM);
         camera.position.set((float) Gdx.graphics.getWidth() / PPM / 2, (float) Gdx.graphics.getHeight() / PPM / 2, 0);
         camera.update();
     }
@@ -159,7 +159,6 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-        EndlessScrollingBackground.getInstance().dispose();
         Mammoth.getInstance().dispose();
         Panel.getInstance().dispose();
         spearman.dispose();
@@ -167,6 +166,6 @@ public class PlayScreen implements Screen {
             projectile.dispose();
         }
         removeUnneededSpears();
-        world.dispose();
+//        debugRenderer.dispose();
     }
 }

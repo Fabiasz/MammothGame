@@ -52,9 +52,7 @@ public final class Panel extends ApplicationAdapter {
     }
 
     public void dispose() {
-        batch.dispose();
-        font.dispose();
-        hpImage.dispose();
+        countDown = 10;
     }
 
     public void render() {

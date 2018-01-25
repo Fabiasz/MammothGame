@@ -8,13 +8,14 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import static com.gsxxx.game.PlayScreen.*;
 
 public final class Ground {
+    private Body groundBody;
     private static final Ground INSTANCE = new Ground();
 
     private Ground() {
         BodyDef groundDef = new BodyDef();
         groundDef.position.set(PlayScreen.camera.viewportWidth / 2, 1.25f);
 
-        Body groundBody = PlayScreen.world.createBody(groundDef);
+        groundBody = PlayScreen.world.createBody(groundDef);
         groundBody.setUserData("ground");
 
         PolygonShape groundHitBox = new PolygonShape();
@@ -32,5 +33,8 @@ public final class Ground {
 
     public static Ground getInstance() {
         return INSTANCE;
+    }
+
+    public void dispose() {
     }
 }
