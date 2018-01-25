@@ -71,6 +71,10 @@ public class PlayScreen implements Screen {
         spearmanStateUpdate();
 
         world.step(1 / 45f, 6, 2);
+        if (Panel.getInstance().countDown < 0) {
+            game.setScreen(new MenuScreen(game));
+            Panel.getInstance().countDown = 10;
+        }
     }
 
 
