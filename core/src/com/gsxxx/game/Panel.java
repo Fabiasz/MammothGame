@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public final class Panel extends ApplicationAdapter {
+    MammothGame game;
     private static Panel INSTANCE = new Panel();
 
     private SpriteBatch batch;
@@ -22,6 +23,16 @@ public final class Panel extends ApplicationAdapter {
     private float gameTimer;
     public int countDown = 10;
 
+    //menu images properties variables
+    private float buttonPositionX;
+    private float buttonPlayPositionX;
+    private float buttonPositionY;
+    private float buttonPlayPositionY;
+    private float buttonWidth;
+    private float buttonHeight;
+    Texture stopButton;
+    Texture stopActiveButton;
+
     private Panel() {
         batch = new SpriteBatch();
         font = new BitmapFont(Gdx.files.internal("font_01.fnt"));
@@ -34,6 +45,13 @@ public final class Panel extends ApplicationAdapter {
         colorRed = 0.6f;
         colorGreen = 0;
         colorBlue = 0;
+
+        buttonPositionX = 900;
+        buttonPositionY = 0;
+        buttonHeight = 200;
+        buttonWidth = 200;
+        stopButton = new Texture("quit.png");
+        stopActiveButton = new Texture("quitactive.png");
     }
 
     public void dispose() {
@@ -46,15 +64,25 @@ public final class Panel extends ApplicationAdapter {
         float hp = Mammoth.getInstance().health;
         gameTimer += Gdx.graphics.getDeltaTime();
         batch.begin();
-        font.draw(batch, " " + countDown, 1600, 150);
+        batch.setColor(1, 1, 1, 1);
+        //batch.draw(stopButton, buttonPositionX, buttonPositionY, buttonHeight, buttonWidth);
+        if (Gdx.input.getX() > 900 && Gdx.input.getX() < 1100 && Gdx.input.getY() > 800 && Gdx.input.getY() < 1000) {
+            batch.draw(stopActiveButton, buttonPositionX, buttonPositionY, buttonWidth, buttonHeight);
+            if (Gdx.input.isTouched()) {
+                Gdx.app.exit();
+            }
+        } else {
+            batch.draw(stopButton, buttonPositionX, buttonPositionY, buttonWidth, buttonHeight);
+        }
+
+
+        font.draw(batch, "time " + countDown, 1600, 150);
         if (gameTimer >= 1) {
             countDown--;
             gameTimer = 0;
         }
         font.draw(batch, "hp", 230, 150);
-        if (hp >= 0) {
-            batch.draw(blank, 40, 58, 150, 125 * hp);
-        }
+        batch.setColor(colorRed, colorGreen, colorBlue, 1);
         if ((colorRed / hp) < 1.05) {
             batch.setColor(colorRed / hp, colorGreen, colorBlue, 1);
         } else {
@@ -63,16 +91,15 @@ public final class Panel extends ApplicationAdapter {
             colorBlue = 0.1f;
             batch.setColor(colorRed, colorGreen / hp, colorBlue / hp, 1);
         }
+        if (hp >= 0) {
+            batch.draw(blank, 40, 58, 150, 125 * hp);
+        }
+
         sprite.setCenter(120, 120);
         sprite.draw(batch);
         batch.end();
     }
-/*    public void timeCouner(){
-        gameTimer+= Gdx.graphics.getDeltaTime();
-        if(gameTimer>=1){
 
-        }
-    }*/
 
     public static Panel getInstance() {
         return INSTANCE;
