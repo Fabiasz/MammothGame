@@ -8,11 +8,11 @@ public final class MenuScreen implements Screen {
     //reference to the game
     MammothGame game;
     //menu textures
-    Texture background;
-    Texture mainPlayButton;
-    Texture mainPlayActiveButton;
-    Texture mainExitButton;
-    Texture mainExitActiveButton;
+    private Texture background;
+    private Texture mainPlayButton;
+    private Texture mainPlayActiveButton;
+    private Texture mainExitButton;
+    private Texture mainExitActiveButton;
 
     //menu images properties variables
     private float buttonPositionX;
@@ -22,7 +22,7 @@ public final class MenuScreen implements Screen {
     private float buttonWidth;
     private float buttonHeight;
 
-    public MenuScreen(MammothGame game) {
+    MenuScreen(MammothGame game) {
         this.game = game;
         //setting textures
         background = new Texture("menubackground.png");
@@ -65,7 +65,6 @@ public final class MenuScreen implements Screen {
         } else {
             game.batch.draw(mainExitButton, buttonInfoPositionX, buttonInfoPositionY, buttonWidth, buttonHeight);
         }
-
 
         game.batch.end();
     }

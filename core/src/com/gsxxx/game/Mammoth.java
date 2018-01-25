@@ -39,7 +39,6 @@ public final class Mammoth {
     }
 
     private MammothStates mammothState = STATE_RUNNING;
-    private float struckStateTimer = 0;
 
     private Mammoth() {
         batch = new SpriteBatch();

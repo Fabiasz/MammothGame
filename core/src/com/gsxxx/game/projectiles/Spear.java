@@ -1,5 +1,6 @@
 package com.gsxxx.game.projectiles;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,7 +21,12 @@ public class Spear extends ProjectilePrototype {
     private Body spearShaft;
     private WeldJoint weldJoint;
 
+    private float lifetime;
+    private boolean isWaken;
+
     public Spear(float projectileStartingPositionX, float projectileStartingPositionY, int projectileStartingAngle) {
+        lifetime = 0;
+        isWaken = false;
         //spear look
         batch = new SpriteBatch();
         batch.setProjectionMatrix(PlayScreen.camera.combined);
@@ -101,20 +107,28 @@ public class Spear extends ProjectilePrototype {
     }
 
     public void render() {
+        if(isWaken){
+            lifetime += Gdx.graphics.getDeltaTime();
+        }
         batch.begin();
         projectileSprite.setRotation((float) Math.toDegrees(spearShaft.getAngle()));
         projectileSprite.setPosition(spearShaft.getPosition().x - projectileSprite.getWidth() / 2 - projectileSprite.getWidth() / 2 * 250 / 1109,
                 spearShaft.getPosition().y - projectileSprite.getHeight() / 2);
         projectileSprite.draw(batch);
         batch.end();
+        if(lifetime > 3){
+            this.destroyThisProjectile();
+        }
     }
 
     public void wake() {
+        isWaken = true;
         spearHead.setGravityScale(1);
         spearShaft.setGravityScale(1);
     }
 
     private void turnOffGravityForThisSpear() {
+        isWaken = false;
         spearHead.setGravityScale(0);
         spearShaft.setGravityScale(0);
     }
@@ -157,5 +171,6 @@ public class Spear extends ProjectilePrototype {
         PlayScreen.world.destroyBody(spearHead);
         PlayScreen.world.destroyBody(spearShaft);
         batch.dispose();
+        PlayScreen.projectilesToRender.remove(0);
     }
 }

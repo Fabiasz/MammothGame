@@ -28,11 +28,12 @@ class Ribbon {
     private Body ribbonBody;
 
     private boolean shouldBeDestroyed = false;
+
     Ribbon() {
         pointsList = new LinkedList<Point>();
         lineThickness = 10;
         maxRibbonLength = 200;
-        fadeTime = 1000;
+        fadeTime = 1500;
     }
 
     void render() {
@@ -41,25 +42,22 @@ class Ribbon {
         if (pointsList.size() > 1) {
             shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
             shapeRenderer.setColor(Color.BLACK);
-//            Iterator<Point> iterator = pointsList.iterator();
-//            Point previous = iterator.next();
-//            while (iterator.hasNext()) {
-//                Point tmp = iterator.next();
-//                shapeRenderer.line(tmp.getX(), tmp.getY(), previous.getX(), previous.getY());
-//                previous = tmp;
-//            }
             shapeRenderer.line(pointsList.getFirst().getX(), pointsList.getFirst().getY(), pointsList.getLast().getX(), pointsList.getLast().getY());
             shapeRenderer.end();
+        }
+
+        if (this.checkIfShouldBeDestroyed()) {
+            dispose();
         }
     }
 
     void addCoordinates(int x, int y) {
         if (canBeDrawn) {
             if (calculateLengthOfRibbon() > maxRibbonLength) {
-                turnOffDrawing();
-                while (calculateLengthOfRibbon() > maxRibbonLength){
+                while (calculateLengthOfRibbon() > maxRibbonLength) {
                     pointsList.removeLast();
                 }
+                turnOffDrawing();
             } else {
                 pointsList.add(new Point(x, y));
             }
@@ -95,7 +93,6 @@ class Ribbon {
             new Timer().schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    clearCoordinates();
                     isTimerSet = false;
                     shouldBeDestroyed = true;
                 }
@@ -105,7 +102,7 @@ class Ribbon {
             ribbonBodyDef.type = BodyDef.BodyType.StaticBody;
             Vector2 ribbonHitboxCoordinates[] = new Vector2[2];
             ribbonHitboxCoordinates[0] = new Vector2((float) pointsList.getFirst().getX() / 200, (float) pointsList.getFirst().getY() / 200);
-            ribbonHitboxCoordinates[1] = new Vector2((float) pointsList.getLast().getX() / 200,  (float)pointsList.getLast().getY()/ 200);
+            ribbonHitboxCoordinates[1] = new Vector2((float) pointsList.getLast().getX() / 200, (float) pointsList.getLast().getY() / 200);
             ChainShape ribbonHitbox = new ChainShape();
             ribbonHitbox.createChain(ribbonHitboxCoordinates);
 
@@ -114,16 +111,16 @@ class Ribbon {
             ribbonHitbox.dispose();
             ribbonBody.setUserData("ribbon");
         }
-        System.out.println(calculateLengthOfRibbon());
     }
 
-    void dispose() {
+    private void dispose() {
         PlayScreen.world.destroyBody(ribbonBody);
         shouldBeDestroyed = false;
+        clearCoordinates();
         canBeDrawn = true;
     }
 
-    boolean checkIfShouldBeDestroyed(){
+    private boolean checkIfShouldBeDestroyed() {
         return shouldBeDestroyed;
     }
 

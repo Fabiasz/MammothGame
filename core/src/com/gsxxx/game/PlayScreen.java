@@ -55,13 +55,8 @@ public class PlayScreen implements Screen {
         }
         Panel.getInstance().render();
         Mammoth.getInstance().render();
-        //Mammoth.getInstance().struckStateTimer+=Gdx.graphics.getDeltaTime();
 
-        debugRenderer.render(world, camera.combined);
-
-        if (ribbon.checkIfShouldBeDestroyed()) {
-            ribbon.dispose();
-        }
+//        debugRenderer.render(world, camera.combined);
 
         removeUnneededSpears();
         stickProjectileToMammoth();
@@ -77,7 +72,6 @@ public class PlayScreen implements Screen {
         } else if (Gdx.input.isKeyJustPressed(Y)) {
             while (projectilesToRender.size() > 1) {
                 projectilesToRender.get(0).destroyThisProjectile();
-                projectilesToRender.remove(0);
             }
         }
     }
@@ -155,6 +149,7 @@ public class PlayScreen implements Screen {
         for (ProjectilePrototype projectile : projectilesToRender) {
             projectile.dispose();
         }
+        removeUnneededSpears();
         world.dispose();
     }
 }
