@@ -41,12 +41,9 @@ public final class Panel extends ApplicationAdapter {
         sprite = new Sprite(hpImage);
         blank = new Texture("blank.png");
         gameTimer = 0f;
-        //setting rgb of the health bar
-        colorRed = 0.6f;
-        colorGreen = 0;
-        colorBlue = 0;
 
-        buttonPositionX = 900;
+
+        buttonPositionX = 1600;
         buttonPositionY = 0;
         buttonHeight = 200;
         buttonWidth = 200;
@@ -65,8 +62,8 @@ public final class Panel extends ApplicationAdapter {
         gameTimer += Gdx.graphics.getDeltaTime();
         batch.begin();
         batch.setColor(1, 1, 1, 1);
-        //batch.draw(stopButton, buttonPositionX, buttonPositionY, buttonHeight, buttonWidth);
-        if (Gdx.input.getX() > 900 && Gdx.input.getX() < 1100 && Gdx.input.getY() > 800 && Gdx.input.getY() < 1000) {
+
+        if (Gdx.input.getX() > 1600 && Gdx.input.getX() < 1800 && Gdx.input.getY() > 800 && Gdx.input.getY() < 1000) {
             batch.draw(stopActiveButton, buttonPositionX, buttonPositionY, buttonWidth, buttonHeight);
             if (Gdx.input.isTouched()) {
                 Gdx.app.exit();
@@ -76,14 +73,18 @@ public final class Panel extends ApplicationAdapter {
         }
 
 
-        font.draw(batch, "time " + countDown, 1600, 150);
+        font.draw(batch, "" + countDown, 1000, 150);
         if (gameTimer >= 1) {
             countDown--;
             gameTimer = 0;
         }
         font.draw(batch, "hp", 230, 150);
-        batch.setColor(colorRed, colorGreen, colorBlue, 1);
+
+        //setting rgb of the health bar
         if ((colorRed / hp) < 1.05) {
+            colorRed = 0.6f;
+            colorGreen = 0;
+            colorBlue = 0;
             batch.setColor(colorRed / hp, colorGreen, colorBlue, 1);
         } else {
             colorRed = 1f;

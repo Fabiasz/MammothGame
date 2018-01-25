@@ -74,6 +74,7 @@ public class PlayScreen implements Screen {
         if (Panel.getInstance().countDown < 0) {
             game.setScreen(new MenuScreen(game));
             Panel.getInstance().countDown = 10;
+            Mammoth.getInstance().health=1f;
         }
     }
 
