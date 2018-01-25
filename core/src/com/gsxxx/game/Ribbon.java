@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ChainShape;
 import com.badlogic.gdx.physics.box2d.EdgeShape;
 
 import java.util.Iterator;
@@ -105,7 +104,7 @@ class Ribbon {
             ribbonHitboxCoordinates[0] = new Vector2((float) pointsList.getFirst().getX() / 200, (float) pointsList.getFirst().getY() / 200);
             ribbonHitboxCoordinates[1] = new Vector2((float) pointsList.getLast().getX() / 200, (float) pointsList.getLast().getY() / 200);
             EdgeShape ribbonHitbox = new EdgeShape();
-            ribbonHitbox.set(ribbonHitboxCoordinates[0],ribbonHitboxCoordinates[1]);
+            ribbonHitbox.set(ribbonHitboxCoordinates[0], ribbonHitboxCoordinates[1]);
 
             ribbonBody = PlayScreen.world.createBody(ribbonBodyDef);
             ribbonBody.createFixture(ribbonHitbox, 0);

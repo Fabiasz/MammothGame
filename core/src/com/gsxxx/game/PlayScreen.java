@@ -9,12 +9,13 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Timer;
 import com.gsxxx.game.Enemies.Spearman;
 import com.gsxxx.game.projectiles.ProjectilePrototype;
 
 import java.util.LinkedList;
+import java.util.Random;
 
-import static com.badlogic.gdx.Input.Keys.U;
 import static com.badlogic.gdx.Input.Keys.Y;
 
 public class PlayScreen implements Screen {
@@ -30,6 +31,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer debugRenderer;
     static public OrthographicCamera camera;
     private LinkedList<MyContactListener.StickInfo> thingsToStick;
+
+    private boolean isSpearmanTimerSet = false;
 
     public PlayScreen(MammothGame game) {
         this.game = game;
@@ -67,9 +70,19 @@ public class PlayScreen implements Screen {
 
 
     private void spearmanStateUpdate() {
-        if (Gdx.input.isKeyJustPressed(U)) {
-            spearman.shoot();
-        } else if (Gdx.input.isKeyJustPressed(Y)) {
+        if (!isSpearmanTimerSet) {
+            isSpearmanTimerSet = true;
+            Random rand = new Random();
+            float randomNum = rand.nextFloat() * (2.5f - 1) + 1;
+            Timer.schedule(new Timer.Task() {
+                @Override
+                public void run() {
+                    spearman.shoot();
+                    isSpearmanTimerSet = false;
+                }
+            }, randomNum);
+        }
+        if (Gdx.input.isKeyJustPressed(Y)) {
             while (projectilesToRender.size() > 1) {
                 projectilesToRender.get(0).destroyThisProjectile();
             }

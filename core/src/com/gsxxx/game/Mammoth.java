@@ -114,7 +114,7 @@ public final class Mammoth {
     }
 
     public void mammothGotHit() {
-        health -= 0.05;
+        health -= 0.2;
         setState(STATE_STRUCK);
         stateTime = 0;
     }

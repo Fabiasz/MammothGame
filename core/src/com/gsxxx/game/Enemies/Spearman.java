@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.gsxxx.game.MammothGame;
 import com.gsxxx.game.PlayScreen;
 import com.gsxxx.game.projectiles.Spear;
 
@@ -123,7 +122,7 @@ public final class Spearman extends Enemy {
 
     }
 
-    public void kill(){
+    public void kill() {
         setEnemyState(enemyStates.STATE_DEAD);
     }
 

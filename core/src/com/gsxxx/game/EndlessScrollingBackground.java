@@ -21,19 +21,19 @@ public final class EndlessScrollingBackground {
         img.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat); //image wrapping
     }
 
-    void render(){
+    void render() {
         xShift = xShift + dShift;
 
         batch.begin();
-        batch.draw(img,0,0, xShift, 0, 5760, 1080);
+        batch.draw(img, 0, 0, xShift, 0, 5760, 1080);
         batch.end();
     }
 
-    public static EndlessScrollingBackground getInstance(){
+    public static EndlessScrollingBackground getInstance() {
         return INSTANCE;
     }
 
-    void dispose(){
+    void dispose() {
         batch.dispose();
         img.dispose();
     }

@@ -8,9 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
-import com.gsxxx.game.MammothGame;
 import com.gsxxx.game.PlayScreen;
-import static com.gsxxx.game.PlayScreen.projectilesToDestroy;
 
 public class Spear extends ProjectilePrototype {
 
@@ -107,7 +105,7 @@ public class Spear extends ProjectilePrototype {
     }
 
     public void render() {
-        if(isWaken){
+        if (isWaken) {
             lifetime += Gdx.graphics.getDeltaTime();
         }
         batch.begin();
@@ -116,7 +114,7 @@ public class Spear extends ProjectilePrototype {
                 spearShaft.getPosition().y - projectileSprite.getHeight() / 2);
         projectileSprite.draw(batch);
         batch.end();
-        if(lifetime > 3){
+        if (lifetime > 3) {
             this.destroyThisProjectile();
         }
     }
@@ -134,9 +132,9 @@ public class Spear extends ProjectilePrototype {
     }
 
     public void shoot(int strength) {
-        spearShaft.applyLinearImpulse(new Vector2((int)(-Math.cos(spearShaft.getAngle()) * strength),
-                (int) (-Math.sin(spearShaft.getAngle())* strength)), spearShaft.getWorldCenter(), true);
-        spearHead.applyLinearImpulse(new Vector2(0, (int) (Math.sin(spearShaft.getAngle())* strength /2)),
+        spearShaft.applyLinearImpulse(new Vector2((int) (-Math.cos(spearShaft.getAngle()) * strength),
+                (int) (-Math.sin(spearShaft.getAngle()) * strength)), spearShaft.getWorldCenter(), true);
+        spearHead.applyLinearImpulse(new Vector2(0, (int) (Math.sin(spearShaft.getAngle()) * strength / 2)),
                 spearHead.getWorldCenter(), true);
 
     }
@@ -154,15 +152,15 @@ public class Spear extends ProjectilePrototype {
     to integrate spear with graphics
      */
     public void setSpearPosition(float x, float y) {
-            Vector2 oldShaftPosition = spearShaft.getPosition();
-            Vector2 oldHeadPosition = spearHead.getPosition();
+        Vector2 oldShaftPosition = spearShaft.getPosition();
+        Vector2 oldHeadPosition = spearHead.getPosition();
 
-            Vector2 difference = new Vector2(x - oldShaftPosition.x, y - oldShaftPosition.y);
-            spearShaft.setTransform(x, y, spearShaft.getAngle());
-            spearHead.setTransform(oldHeadPosition.x + difference.x, oldHeadPosition.y + difference.y, spearHead.getAngle());
-     }
+        Vector2 difference = new Vector2(x - oldShaftPosition.x, y - oldShaftPosition.y);
+        spearShaft.setTransform(x, y, spearShaft.getAngle());
+        spearHead.setTransform(oldHeadPosition.x + difference.x, oldHeadPosition.y + difference.y, spearHead.getAngle());
+    }
 
-    public void destroyThisProjectile(){
+    public void destroyThisProjectile() {
         PlayScreen.projectilesToDestroy.add(this);
     }
 
