@@ -36,7 +36,7 @@ class Ribbon {
     Ribbon() {
         pointsList = new LinkedList<Point>();
         lineThickness = 10;
-        maxRibbonLength = 200;
+        maxRibbonLength = 400;
         fadeTime = 1500;
     }
 
