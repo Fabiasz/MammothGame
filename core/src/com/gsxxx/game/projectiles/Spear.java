@@ -114,7 +114,7 @@ public class Spear extends ProjectilePrototype {
                 spearShaft.getPosition().y - projectileSprite.getHeight() / 2);
         projectileSprite.draw(batch);
         batch.end();
-        if (lifetime > 3) {
+        if (lifetime > 1.5) {
             this.destroyThisProjectile();
         }
     }

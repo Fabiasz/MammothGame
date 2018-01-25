@@ -19,6 +19,8 @@ public final class Panel extends ApplicationAdapter {
     private float colorRed;
     private float colorGreen;
     private float colorBlue;
+    private float gameTimer;
+    public int countDown = 10;
 
     private Panel() {
         batch = new SpriteBatch();
@@ -27,7 +29,7 @@ public final class Panel extends ApplicationAdapter {
         hpImage = new Texture("healthbar.png");
         sprite = new Sprite(hpImage);
         blank = new Texture("blank.png");
-
+        gameTimer = 0f;
         //setting rgb of the health bar
         colorRed = 0.6f;
         colorGreen = 0;
@@ -42,8 +44,13 @@ public final class Panel extends ApplicationAdapter {
 
     public void render() {
         float hp = Mammoth.getInstance().health;
+        gameTimer += Gdx.graphics.getDeltaTime();
         batch.begin();
-        font.draw(batch, "score", 1600, 150);
+        font.draw(batch, " " + countDown, 1600, 150);
+        if (gameTimer >= 1) {
+            countDown--;
+            gameTimer = 0;
+        }
         font.draw(batch, "hp", 230, 150);
         if (hp >= 0) {
             batch.draw(blank, 40, 58, 150, 125 * hp);
@@ -60,6 +67,12 @@ public final class Panel extends ApplicationAdapter {
         sprite.draw(batch);
         batch.end();
     }
+/*    public void timeCouner(){
+        gameTimer+= Gdx.graphics.getDeltaTime();
+        if(gameTimer>=1){
+
+        }
+    }*/
 
     public static Panel getInstance() {
         return INSTANCE;
