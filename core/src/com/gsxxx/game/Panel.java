@@ -44,7 +44,7 @@ public final class Panel extends ApplicationAdapter {
 
 
         buttonPositionX = 1600;
-        buttonPositionY = 0;
+        buttonPositionY = 800;
         buttonHeight = 200;
         buttonWidth = 200;
         stopButton = new Texture("quit.png");
@@ -63,7 +63,7 @@ public final class Panel extends ApplicationAdapter {
         batch.begin();
         batch.setColor(1, 1, 1, 1);
 
-        if (Gdx.input.getX() > 1600 && Gdx.input.getX() < 1800 && Gdx.input.getY() > 800 && Gdx.input.getY() < 1000) {
+        if (Gdx.input.getX() > 1600 && Gdx.input.getX() < 1800 && Gdx.input.getY() > 50 && Gdx.input.getY() < 250) {
             batch.draw(stopActiveButton, buttonPositionX, buttonPositionY, buttonWidth, buttonHeight);
             if (Gdx.input.isTouched()) {
                 Gdx.app.exit();
@@ -73,7 +73,7 @@ public final class Panel extends ApplicationAdapter {
         }
 
 
-        font.draw(batch, "" + countDown, 1000, 150);
+        font.draw(batch, "" + countDown, 1700, 150);
         if (gameTimer >= 1) {
             countDown--;
             gameTimer = 0;
